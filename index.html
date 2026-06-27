@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>F1VRA Airdrop</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a1a;color:#fff;font-family:sans-serif;min-height:100vh}
+.header{background:linear-gradient(135deg,#6c63ff,#3ecfcf);padding:30px 20px;text-align:center}
+.header h1{font-size:28px;font-weight:bold}
+.points-card{background:#1a1a2e;margin:20px;border-radius:20px;padding:25px;text-align:center;border:1px solid #6c63ff44}
+.score{font-size:48px;font-weight:bold;color:#6c63ff}
+.section{margin:20px}
+.section h2{color:#3ecfcf;margin-bottom:15px}
+.task-card{background:#1a1a2e;border-radius:15px;padding:18px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;border:1px solid #ffffff11}
+.task-info{display:flex;align-items:center;gap:12px}
+.task-icon{font-size:24px}
+.task-name{font-size:15px;font-weight:bold}
+.task-pts{color:#3ecfcf;font-size:13px;margin-top:3px}
+.task-btn{background:#6c63ff;border:none;color:#fff;padding:10px 18px;border-radius:10px;cursor:pointer;font-size:13px}
+.task-btn.done{background:#2a2a4a;color:#666}
+.quiz-card{background:#1a1a2e;border-radius:15px;padding:20px;border:1px solid #ffffff11}
+.quiz-q{font-size:16px;margin-bottom:15px;line-height:1.6}
+.quiz-opt{background:#0a0a1a;border:1px solid #6c63ff44;color:#fff;width:100%;padding:12px;border-radius:10px;margin-bottom:8px;cursor:pointer;font-size:14px;text-align:right}
+.quiz-opt.correct{border-color:#00ff88;background:#00ff8822}
+.quiz-opt.wrong{border-color:#ff4466;background:#ff446622}
+.lb-item{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #ffffff11}
+.lb-pts{color:#6c63ff;font-weight:bold}
+.nav{display:flex;background:#1a1a2e;position:fixed;bottom:0;width:100%;border-top:1px solid #ffffff11}
+.nav-btn{flex:1;padding:15px;text-align:center;cursor:pointer;font-size:22px}
+.nav-btn.active{color:#6c63ff}
+.page{display:none;padding-bottom:80px}
+.page.active{display:block}
+</style>
+</head>
+<body>
+<div class="header"><h1>🎯 F1VRA Airdrop</h1><p>تسک انجام بده، جایزه بگیر!</p></div>
+<div id="page-home" class="page active">
+<div class="points-card"><div class="score" id="score">0</div><div>امتیاز کل</div></div>
+<div class="section"><h2>📊 وضعیت تو</h2>
+<div class="task-card"><div class="task-info"><span class="task-icon">✅</span><div><div class="task-name">تسک‌های انجام شده</div><div class="task-pts" id="tasks-done">0 از 4</div></div></div></div>
+</div></div>
+<div id="page-tasks" class="page"><div class="section"><h2>📋 تسک‌ها</h2>
+<div class="task-card"><div class="task-info"><span class="task-icon">📢</span><div><div class="task-name">جوین کانال تلگرام</div><div class="task-pts">+100 امتیاز</div></div></div><button class="task-btn" id="btn-telegram" onclick="doTask('telegram','https://t.me/f1vra')">انجام</button></div>
+<div class="task-card"><div class="task-info"><span class="task-icon">🐦</span><div><div class="task-name">فالو تویتر</div><div class="task-pts">+100 امتیاز</div></div></div><button class="task-btn" id="btn-twitter" onclick="doTask('twitter','https://twitter.com/Hoseinsze')">انجام</button></div>
+<div class="task-card"><div class="task-info"><span class="task-icon">🤖</span><div><div class="task-name">استارت بات</div><div class="task-pts">+50 امتیاز</div></div></div><button class="task-btn" id="btn-bot" onclick="doTask('bot','https://t.me/MinabTapBot')">انجام</button></div>
+<div class="task-card"><div class="task-info"><span class="task-icon">📣</span><div><div class="task-name">اشتراک‌گذاری</div><div class="task-pts">+150 امتیاز</div></div></div><button class="task-btn" id="btn-share" onclick="shareBot()">اشتراک</button></div>
+</div></div>
+<div id="page-quiz" class="page"><div class="section"><h2>🧠 کوییز میناب</h2><div class="quiz-card" id="quiz-box"></div></div></div>
+<div id="page-lb" class="page"><div class="section"><h2>🏆 لیدربورد</h2><div id="lb-box"></div></div></div>
+<div class="nav">
+<div class="nav-btn active" onclick="showPage('home',this)">🏠</div>
+<div class="nav-btn" onclick="showPage('tasks',this)">📋</div>
+<div class="nav-btn" onclick="showPage('quiz',this)">🧠</div>
+<div class="nav-btn" onclick="showPage('lb',this)">🏆</div>
+</div>
+<script>
+const tg=window.Telegram.WebApp;tg.expand();
+let state=JSON.parse(localStorage.getItem('f1vra')||'{"points":0,"tasks":[],"quiz_step":0}');
+const QUIZ=[
+{q:"میناب در چه استانی قرار دارد؟",opts:["هرمزگان","کرمان","سیستان"],ans:0},
+{q:"میناب بیشتر به چه محصولی مشهور است؟",opts:["پسته","خرما","زعفران"],ans:1},
+{q:"رودخانه میناب به کجا می‌ریزد؟",opts:["دریای عمان","خلیج فارس","دریاچه ارومیه"],ans:0},
+{q:"میناب در کدام منطقه ایران قرار دارد؟",opts:["جنوب","شمال","غرب"],ans:0},
+];
+function save(){localStorage.setItem('f1vra',JSON.stringify(state));}
+function updateUI(){
+document.getElementById('score').textContent=state.points;
+document.getElementById('tasks-done').textContent=state.tasks.length+' از 4';
+['telegram','twitter','bot','share'].forEach(t=>{
+const b=document.getElementById('btn-'+t);
+if(b&&state.tasks.includes(t)){b.textContent='✅';b.className='task-btn done';b.disabled=true;}
+});}
+function doTask(name,url){
+window.open(url,'_blank');
+setTimeout(()=>{
+if(!state.tasks.includes(name)){
+const pts=name==='share'?150:name==='bot'?50:100;
+state.tasks.push(name);state.points+=pts;save();updateUI();
+tg.showAlert('✅ +'+pts+' امتیاز گرفتی!');}},2000);}
+function shareBot(){tg.switchInlineQuery('بات F1VRA رو امتحان کن!');doTask('share','');}
+function showPage(name,el){
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+document.getElementById('page-'+name).classList.add('active');
+el.classList.add('active');
+if(name==='quiz')renderQuiz();
+if(name==='lb')renderLB();}
+function renderQuiz(){
+const box=document.getElementById('quiz-box');
+if(state.quiz_step>=QUIZ.length){box.innerHTML='<div style="text-align:center;padding:30px">🏆 همه سوالا رو جواب دادی!</div>';return;}
+const q=QUIZ[state.quiz_step];
+box.innerHTML=`<div class="quiz-q">سوال ${state.quiz_step+1} از ${QUIZ.length}<br><br>${q.q}</div>`+q.opts.map((o,i)=>`<button class="quiz-opt" onclick="answerQuiz(${i})">${o}</button>`).join('');}
+function answerQuiz(i){
+const q=QUIZ[state.quiz_step];
+const btns=document.querySelectorAll('.quiz-opt');
+btns[q.ans].classList.add('correct');
+if(i!==q.ans){btns[i].classList.add('wrong');return;}
+state.points+=50;state.quiz_step++;save();
+setTimeout(renderQuiz,800);}
+function renderLB(){
+const fake=[{name:'علی',pts:state.points+500},{name:'سارا',pts:state.points+300},{name:'تو',pts:state.points},{name:'رضا',pts:Math.max(0,state.points-100)}].sort((a,b)=>b.pts-a.pts);
+const medals=['🥇','🥈','🥉','4️⃣'];
+document.getElementById('lb-box').innerHTML=fake.map((u,i)=>`<div class="lb-item"><span>${medals[i]}</span><span>${u.name}</span><span class="lb-pts">${u.pts}</span></div>`).join('');
+}
+updateUI();
+</script>
+</body>
+</html>
