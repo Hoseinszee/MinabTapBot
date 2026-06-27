@@ -2,11 +2,11 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>میناب تسک</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{background:#0a0a1a;color:#fff;font-family:sans-serif;min-height:100vh;user-select:none}
 #splash{position:fixed;top:0;left:0;width:100%;height:100%;z-index:999;background:#000;transition:opacity 1s}
 #splash img{width:100%;height:100%;object-fit:cover;opacity:0.9}
@@ -19,10 +19,13 @@ body{background:#0a0a1a;color:#fff;font-family:sans-serif;min-height:100vh;user-
 .header p{opacity:0.6;margin-top:4px;font-size:13px}
 .points-card{background:linear-gradient(135deg,#1a1a3e,#0a2a2e);margin:16px;border-radius:20px;padding:20px;text-align:center;border:1px solid #6c63ff55}
 .score{font-size:52px;font-weight:bold;background:linear-gradient(135deg,#6c63ff,#3ecfcf);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.tap-btn{width:150px;height:150px;border-radius:50%;background:linear-gradient(135deg,#6c63ff,#3ecfcf);border:none;cursor:pointer;font-size:50px;margin:10px auto;display:block;box-shadow:0 0 30px #6c63ff55}
-.tap-info{text-align:center;color:#aaa;font-size:13px;margin-bottom:10px}
+.tap-area{position:relative;width:100%;height:280px;overflow:hidden;background:url('https://i.postimg.cc/KjZHtZtK/701027.jpg') center/cover;border-radius:20px;margin:16px auto;display:block;border:none;cursor:pointer;touch-action:manipulation}
+.tap-area-inner{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,50,0.3);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.tap-coin{font-size:60px;filter:drop-shadow(0 0 10px gold)}
+.tap-hint{color:#fff;font-size:14px;margin-top:10px;text-shadow:0 0 10px #000}
+.tap-info{text-align:center;color:#aaa;font-size:13px;margin:8px 16px}
 .tap-progress{background:#1a1a2e;border-radius:10px;height:8px;margin:0 16px 16px;overflow:hidden}
-.tap-bar{height:100%;background:linear-gradient(135deg,#6c63ff,#3ecfcf);border-radius:10px;transition:width 0.3s}
+.tap-bar{height:100%;background:linear-gradient(135deg,#6c63ff,#3ecfcf);border-radius:10px;transition:width 0.1s}
 .section{margin:16px}
 .section h2{color:#3ecfcf;margin-bottom:12px;font-size:16px}
 .task-card{background:#1a1a2e;border-radius:15px;padding:16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;border:1px solid #ffffff11}
@@ -34,7 +37,7 @@ body{background:#0a0a1a;color:#fff;font-family:sans-serif;min-height:100vh;user-
 .task-btn.done{background:#2a2a4a;color:#555}
 .quiz-card{background:#1a1a2e;border-radius:15px;padding:20px;border:1px solid #ffffff11}
 .quiz-q{font-size:15px;margin-bottom:15px;line-height:1.7}
-.quiz-opt{background:#0d0d20;border:1px solid #6c63ff33;color:#fff;width:100%;padding:12px;border-radius:10px;margin-bottom:8px;cursor:pointer;font-size:14px;text-align:right}
+.quiz-opt{background:#0d0d20;border:1px solid #6c63ff33;color:#fff;width:100%;padding:12px;border-radius:10px;margin-bottom:8px;cursor:pointer;font-size:14px;text-align:right;-webkit-tap-highlight-color:transparent}
 .quiz-opt.correct{border-color:#00ff88;background:#00ff8822;color:#00ff88}
 .quiz-opt.wrong{border-color:#ff4466;background:#ff446622;color:#ff4466}
 .lb-item{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #ffffff11}
@@ -47,7 +50,7 @@ body{background:#0a0a1a;color:#fff;font-family:sans-serif;min-height:100vh;user-
 .page.active{display:block}
 .memorial{background:linear-gradient(135deg,#1a0a0a,#0a0a1a);border:1px solid #ff000033;border-radius:15px;margin:16px;padding:20px;text-align:center}
 .memorial p{color:#aaa;font-size:13px;line-height:1.8;margin-top:10px}
-.float-pts{position:fixed;font-size:20px;font-weight:bold;color:#3ecfcf;pointer-events:none;animation:floatup 1s ease-out forwards;z-index:9999}
+.float-pts{position:fixed;font-size:18px;font-weight:bold;color:gold;pointer-events:none;animation:floatup 1s ease-out forwards;z-index:9999;text-shadow:0 0 10px #000}
 @keyframes floatup{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-80px)}}
 </style>
 </head>
@@ -64,8 +67,13 @@ body{background:#0a0a1a;color:#fff;font-family:sans-serif;min-height:100vh;user-
 <div class="header"><h1>میناب تسک</h1><p>به یاد شهدای مدرسه میناب | #Minab168</p></div>
 <div id="page-home" class="page active">
 <div class="points-card"><div class="score" id="score">0</div><div style="color:#aaa;font-size:13px">امتیاز کل</div></div>
-<div class="tap-info">هر 100 تب = 10 امتیاز</div>
-<button class="tap-btn" id="tapbtn" onclick="doTap(event)">🕊️</button>
+<div class="tap-info">هر تب = 1 امتیاز 🪙</div>
+<button class="tap-area" id="tapbtn" ontouchstart="doTap(event)" onclick="doTap(event)">
+<div class="tap-area-inner">
+<div class="tap-coin">🪙</div>
+<div class="tap-hint">روی خلیج فارس تب کن!</div>
+</div>
+</button>
 <div class="tap-progress"><div class="tap-bar" id="tapbar" style="width:0%"></div></div>
 <div class="memorial"><div style="font-size:28px">🕊️</div><div style="color:#ff6666;font-size:16px;margin-top:8px">#Minab168</div><p>در یادبود 168 دانش آموز و معلم شهید مدرسه میناب. یادشان گرامی باد.</p></div>
 </div>
@@ -100,15 +108,21 @@ function save(){localStorage.setItem('minab',JSON.stringify(state));}
 function updateUI(){
 document.getElementById('score').textContent=state.points;
 ['telegram','twitter','bot','share','hashtag'].forEach(t=>{const b=document.getElementById('btn-'+t);if(b&&state.tasks.includes(t)){b.textContent='✅';b.className='task-btn done';b.disabled=true;}});
-document.getElementById('tapbar').style.width=(state.taps%100)+'%';
+document.getElementById('tapbar').style.width=((state.taps%100))+'%';
 }
+let lastTap=0;
 function doTap(e){
+e.preventDefault();
+const now=Date.now();
+if(now-lastTap<50)return;
+lastTap=now;
 state.taps++;
-if(state.taps%100===0){state.points+=10;save();showFloat('+10',e.clientX,e.clientY);}
-else{showFloat('+',e.clientX,e.clientY);}
+state.points++;
+save();
+showFloat('+1',e.clientX||200,e.clientY||200);
 updateUI();
 }
-function showFloat(txt,x,y){const el=document.createElement('div');el.className='float-pts';el.textContent=txt;el.style.left=(x-20)+'px';el.style.top=(y-20)+'px';document.body.appendChild(el);setTimeout(()=>el.remove(),1000);}
+function showFloat(txt,x,y){const el=document.createElement('div');el.className='float-pts';el.textContent=txt;el.style.left=(x-15)+'px';el.style.top=(y-15)+'px';document.body.appendChild(el);setTimeout(()=>el.remove(),1000);}
 function doTask(name,url){
 window.open(url,'_blank');
 setTimeout(()=>{if(!state.tasks.includes(name)){const pts=name==='hashtag'?200:name==='share'?150:name==='bot'?50:100;state.tasks.push(name);state.points+=pts;save();updateUI();tg.showAlert('+'+pts+' امتیاز گرفتی!');}},2000);
@@ -129,7 +143,7 @@ function renderQuiz(){
 const box=document.getElementById('quiz-box');
 if(state.quiz_step>=QUIZ.length){box.innerHTML='<div style="text-align:center;padding:30px;color:#3ecfcf">همه سوالا رو جواب دادی!</div>';return;}
 const q=QUIZ[state.quiz_step];
-box.innerHTML='<div class="quiz-q">سوال '+(state.quiz_step+1)+' از '+QUIZ.length+'<br><br>'+q.q+'</div>'+q.opts.map((o,i)=>'<button class="quiz-opt" onclick="answerQuiz('+i+'">'+o+'</button>').join('');
+box.innerHTML='<div class="quiz-q">سوال '+(state.quiz_step+1)+' از '+QUIZ.length+'<br><br>'+q.q+'</div>'+q.opts.map((o,i)=>'<button class="quiz-opt" onclick="answerQuiz('+i+')">' +o+'</button>').join('');
 }
 function answerQuiz(i){
 const q=QUIZ[state.quiz_step];const btns=document.querySelectorAll('.quiz-opt');
