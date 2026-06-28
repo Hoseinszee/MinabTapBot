@@ -122,8 +122,8 @@ body{background:#0a0a1a;color:#fff;font-family:sans-serif;min-height:100vh;user-
 
 <div class="ref-card">
 <div style="color:#3ecfcf;font-size:13px;margin-bottom:10px" id="ref-title">👥 Your Referrals</div>
-<div class="ref-count" id="ref-count">0</div>
-<div style="color:#aaa;font-size:12px;margin-top:5px" id="ref-tokens-text">0 MINAB168 from referrals</div>
+
+
 <button style="margin-top:12px;background:linear-gradient(135deg,#6c63ff,#3ecfcf);border:none;color:#fff;padding:10px 25px;border-radius:15px;cursor:pointer;font-size:13px" onclick="copyRefLink()" id="ref-btn">🔗 Copy Invite Link</button>
 </div>
 
@@ -360,8 +360,6 @@ function updateUI(){
   document.getElementById('score').textContent = state.points;
   document.getElementById('token-count').textContent = (state.tokens||0).toLocaleString();
   document.getElementById('score-sub').innerHTML = t.score_sub+'<span id="token-count">'+(state.tokens||0).toLocaleString()+'</span> MINAB168';
-  document.getElementById('ref-count').textContent = state.referral_count||0;
-  document.getElementById('ref-tokens-text').textContent = ((state.referral_count||0)*5000).toLocaleString()+t.ref_tokens;
   document.getElementById('tapbar').style.width = (state.taps%100)+'%';
   ['telegram','twitter','bot','hashtag','wallet'].forEach(t=>{
     const b=document.getElementById('btn-'+t);
