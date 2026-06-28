@@ -22,7 +22,7 @@ body{background:#0a0a1a;color:#fff;font-family:sans-serif;min-height:100vh;user-
 .header p{opacity:0.6;font-size:11px}
 #ton-btn{background:linear-gradient(135deg,#0098ea,#006bb3);border:none;color:#fff;padding:8px 12px;border-radius:20px;font-size:11px;cursor:pointer}
 #ton-btn.connected{background:linear-gradient(135deg,#00c853,#007a33)}
-.points-card{background:linear-gradient(135deg,#1a1a3e,#0a2a2e);margin:16px;border-radius:20px;padding:20px;text-align:center;border:1px solid #6c63ff55;box-shadow:0 0 20px #6c63ff22}
+.points-card{background:linear-gradient(135deg,#1a1a3e,#0a2a2e);margin:16px;border-radius:20px;padding:20px;text-align:center;border:1px solid #6c63ff55}
 .score{font-size:48px;font-weight:bold;background:linear-gradient(135deg,#6c63ff,#3ecfcf);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .tap-area{position:relative;width:calc(100% - 32px);height:240px;overflow:hidden;background:url('https://i.postimg.cc/KjZHtZtK/701027.jpg') center/cover;border-radius:20px;margin:0 16px;display:block;border:none;cursor:pointer;touch-action:manipulation}
 .tap-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,50,0.25);display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
@@ -30,7 +30,7 @@ body{background:#0a0a1a;color:#fff;font-family:sans-serif;min-height:100vh;user-
 .tap-hint{color:#fff;font-size:13px;margin-top:8px;text-shadow:0 2px 4px #000}
 .tap-info{text-align:center;color:#aaa;font-size:12px;margin:8px 16px 4px}
 .tap-progress{background:#1a1a2e;border-radius:10px;height:6px;margin:0 16px 12px;overflow:hidden}
-.tap-bar{height:100%;background:linear-gradient(135deg,#6c63ff,#3ecfcf);border-radius:10px;transition:width 0.05s}
+.tap-bar{height:100%;background:linear-gradient(135deg,#6c63ff,#3ecfcf);border-radius:10px}
 .section{margin:16px}
 .section h2{color:#3ecfcf;margin-bottom:12px;font-size:15px}
 .task-card{background:#1a1a2e;border-radius:15px;padding:14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;border:1px solid #ffffff11}
@@ -41,17 +41,15 @@ body{background:#0a0a1a;color:#fff;font-family:sans-serif;min-height:100vh;user-
 .task-btn{background:linear-gradient(135deg,#6c63ff,#3ecfcf);border:none;color:#fff;padding:8px 14px;border-radius:10px;cursor:pointer;font-size:12px;white-space:nowrap}
 .task-btn.done{background:#2a2a4a;color:#555;cursor:default}
 .quiz-card{background:#1a1a2e;border-radius:15px;padding:20px;border:1px solid #ffffff11}
-.quiz-q{font-size:14px;margin-bottom:15px;line-height:1.7;color:#eee}
+.quiz-q{font-size:14px;margin-bottom:15px;line-height:1.7}
 .quiz-opt{background:#0d0d20;border:1px solid #6c63ff33;color:#fff;width:100%;padding:12px;border-radius:10px;margin-bottom:8px;cursor:pointer;font-size:13px;text-align:right}
-.quiz-opt:disabled{cursor:default}
 .quiz-opt.correct{border-color:#00ff88;background:#00ff8822;color:#00ff88}
 .quiz-opt.wrong{border-color:#ff4466;background:#ff446622;color:#ff4466}
 .lb-box{background:#1a1a2e;border-radius:15px;padding:20px}
 .lb-item{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #ffffff11}
 .lb-item:last-child{border-bottom:none}
-.lb-rank{font-size:20px;width:30px}
 .lb-name{flex:1;margin:0 10px;font-size:14px}
-.lb-pts{color:#6c63ff;font-weight:bold;font-size:13px}
+.lb-pts{color:#6c63ff;font-weight:bold}
 .nav{display:flex;background:#0d0d20;position:fixed;bottom:0;width:100%;border-top:1px solid #ffffff11;z-index:100}
 .nav-btn{flex:1;padding:12px;text-align:center;cursor:pointer;font-size:18px;color:#555}
 .nav-btn.active{color:#6c63ff}
@@ -59,7 +57,7 @@ body{background:#0a0a1a;color:#fff;font-family:sans-serif;min-height:100vh;user-
 .page.active{display:block}
 .memorial{background:linear-gradient(135deg,#1a0a0a,#0a0a1a);border:1px solid #ff000033;border-radius:15px;margin:16px;padding:20px;text-align:center}
 .memorial p{color:#aaa;font-size:13px;line-height:1.8;margin-top:10px}
-.float-pts{position:fixed;font-size:16px;font-weight:bold;color:gold;pointer-events:none;animation:floatup 0.8s ease-out forwards;z-index:9999;text-shadow:0 0 8px rgba(0,0,0,0.8)}
+.float-pts{position:fixed;font-size:16px;font-weight:bold;color:gold;pointer-events:none;animation:floatup 0.8s ease-out forwards;z-index:9999}
 @keyframes floatup{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-70px)}}
 .timer-card{background:linear-gradient(135deg,#0a1a0a,#0a0a1a);border:1px solid #00ff8833;border-radius:20px;margin:16px;padding:20px;text-align:center}
 .timer-title{color:#00ff88;font-size:14px;margin-bottom:15px;font-weight:bold}
@@ -67,7 +65,8 @@ body{background:#0a0a1a;color:#fff;font-family:sans-serif;min-height:100vh;user-
 .timer-box{background:#1a1a2e;border-radius:12px;padding:12px 10px;min-width:60px;border:1px solid #00ff8833}
 .timer-num{font-size:28px;font-weight:bold;color:#00ff88}
 .timer-label{font-size:10px;color:#aaa;margin-top:4px}
-.timer-desc{color:#aaa;font-size:12px;margin-top:15px;line-height:1.6}
+.ref-card{background:#1a1a2e;border-radius:15px;margin:16px;padding:20px;border:1px solid #6c63ff33;text-align:center}
+.ref-count{font-size:36px;font-weight:bold;color:#6c63ff}
 .ton-packages{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px}
 .ton-pkg{background:#1a1a2e;border-radius:15px;padding:15px;text-align:center;border:1px solid #0098ea33;cursor:pointer;position:relative}
 .ton-pkg.popular{border-color:#6c63ff}
@@ -75,9 +74,6 @@ body{background:#0a0a1a;color:#fff;font-family:sans-serif;min-height:100vh;user-
 .ton-amount{font-size:24px;font-weight:bold;color:#0098ea}
 .ton-tokens{color:#3ecfcf;font-size:13px;margin-top:4px}
 .ton-bonus{color:#00ff88;font-size:11px;margin-top:2px}
-.ref-card{background:#1a1a2e;border-radius:15px;margin:16px;padding:20px;border:1px solid #6c63ff33;text-align:center}
-.ref-count{font-size:36px;font-weight:bold;color:#6c63ff}
-.ref-tokens{color:#3ecfcf;font-size:14px;margin-top:5px}
 .wp-section{background:#1a1a2e;border-radius:15px;margin:16px;padding:20px;border:1px solid #ffffff11}
 .wp-title{color:#6c63ff;font-size:16px;font-weight:bold;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #ffffff11}
 .wp-text{color:#ccc;font-size:13px;line-height:1.8}
@@ -89,106 +85,89 @@ body{background:#0a0a1a;color:#fff;font-family:sans-serif;min-height:100vh;user-
 .token-item{background:#0a0a1a;border-radius:10px;padding:10px;text-align:center;border:1px solid #ffffff11}
 .token-pct{font-size:20px;font-weight:bold;color:#6c63ff}
 .token-label{font-size:11px;color:#aaa;margin-top:4px}
-.loading{text-align:center;color:#aaa;padding:20px;font-size:13px}
 </style>
 </head>
 <body>
 <div id="splash">
 <img src="https://i.postimg.cc/j2JfjfFs/minab168-poster.jpg" alt="Minab168">
 <div class="overlay">
-<h2>🕊️ به یاد شهدای میناب</h2>
+<h2>به یاد شهدای میناب</h2>
 <p>168 روح بی گناه که فراموش نخواهند شد</p>
-<button class="btn" onclick="hideSplash()">ورود به میناب تسک ←</button>
+<button class="btn" id="enter-btn">ورود به میناب تسک</button>
 </div>
 </div>
-
 <div id="app" style="display:none">
 <div class="header">
-<div class="header-title"><h1>🎯 میناب تسک</h1><p>#Minab168 | MINAB168 Token</p></div>
+<div class="header-title"><h1>میناب تسک</h1><p>#Minab168 | MINAB168 Token</p></div>
 <button id="ton-btn" onclick="connectWallet()">💎 ولت</button>
 </div>
-
 <div id="page-home" class="page active">
 <div class="points-card">
 <div class="score" id="score">0</div>
 <div style="color:#aaa;font-size:12px;margin-top:4px">امتیاز | <span id="token-count">0</span> MINAB168</div>
 </div>
-<div class="tap-info">هر تب = 1 امتیاز 🪙</div>
+<div class="tap-info">هر تب = 1 امتیاز</div>
 <button class="tap-area" id="tapbtn">
 <div class="tap-overlay"><div class="tap-coin">🪙</div><div class="tap-hint">روی خلیج فارس تب کن!</div></div>
 </button>
 <div class="tap-progress"><div class="tap-bar" id="tapbar" style="width:0%"></div></div>
-
 <div class="ref-card">
 <div style="color:#3ecfcf;font-size:13px;margin-bottom:10px">👥 رفرال های تو</div>
 <div class="ref-count" id="ref-count">0</div>
-<div class="ref-tokens" id="ref-tokens">0 MINAB168 از رفرال</div>
+<div style="color:#aaa;font-size:12px;margin-top:5px" id="ref-tokens">0 MINAB168 از رفرال</div>
 <button style="margin-top:12px;background:linear-gradient(135deg,#6c63ff,#3ecfcf);border:none;color:#fff;padding:10px 25px;border-radius:15px;cursor:pointer;font-size:13px" onclick="copyRefLink()">🔗 کپی لینک دعوت</button>
 </div>
-
 <div class="timer-card">
-<div class="timer-title">🚀 تا لانچ توکن MINAB168</div>
+<div class="timer-title">🚀 تا لانچ MINAB168</div>
 <div class="timer-boxes">
 <div class="timer-box"><div class="timer-num" id="t-days">90</div><div class="timer-label">روز</div></div>
 <div class="timer-box"><div class="timer-num" id="t-hours">00</div><div class="timer-label">ساعت</div></div>
 <div class="timer-box"><div class="timer-num" id="t-mins">00</div><div class="timer-label">دقیقه</div></div>
 <div class="timer-box"><div class="timer-num" id="t-secs">00</div><div class="timer-label">ثانیه</div></div>
 </div>
-<div class="timer-desc">با شروع روند صعودی بیتکوین لانچ میشه 🔥<br>هرچه زودتر دعوت کنی بیشتر سود میبری!</div>
 </div>
-
 <div class="memorial">
 <div style="font-size:28px">🕊️</div>
 <div style="color:#ff6666;font-size:16px;margin-top:8px">#Minab168</div>
-<p>در یادبود 168 دانش آموز و معلم شهید مدرسه میناب. یادشان گرامی باد.</p>
+<p>در یادبود 168 دانش آموز و معلم شهید مدرسه میناب</p>
 </div>
 </div>
-
 <div id="page-tasks" class="page">
 <div class="section"><h2>📋 تسک ها</h2>
 <div class="task-card"><div class="task-info"><span class="task-icon">📢</span><div><div class="task-name">جوین کانال تلگرام</div><div class="task-pts">+100 امتیاز | +1000 MINAB168</div></div></div><button class="task-btn" id="btn-telegram" onclick="doTask('telegram','https://t.me/f1vra')">انجام</button></div>
 <div class="task-card"><div class="task-info"><span class="task-icon">🐦</span><div><div class="task-name">فالو تویتر</div><div class="task-pts">+100 امتیاز | +1000 MINAB168</div></div></div><button class="task-btn" id="btn-twitter" onclick="doTask('twitter','https://twitter.com/Hoseinsze')">انجام</button></div>
 <div class="task-card"><div class="task-info"><span class="task-icon">🤖</span><div><div class="task-name">استارت بات</div><div class="task-pts">+50 امتیاز | +500 MINAB168</div></div></div><button class="task-btn" id="btn-bot" onclick="doTask('bot','https://t.me/MinabTapBot')">انجام</button></div>
-<div class="task-card"><div class="task-info"><span class="task-icon">📣</span><div><div class="task-name">دعوت دوستان</div><div class="task-pts">+500 امتیاز | +5000 MINAB168 هر نفر</div></div></div><button class="task-btn" id="btn-share" onclick="copyRefLink()">دعوت</button></div>
+<div class="task-card"><div class="task-info"><span class="task-icon">📣</span><div><div class="task-name">دعوت دوستان</div><div class="task-pts">+500 امتیاز | +5000 MINAB168 هر نفر</div></div></div><button class="task-btn" onclick="copyRefLink()">دعوت</button></div>
 <div class="task-card"><div class="task-info"><span class="task-icon">🕊️</span><div><div class="task-name">هشتگ #Minab168</div><div class="task-pts">+200 امتیاز | +2000 MINAB168</div></div></div><button class="task-btn" id="btn-hashtag" onclick="doTask('hashtag','https://twitter.com/intent/tweet?text=%23Minab168')">انجام</button></div>
-<div class="task-card"><div class="task-info"><span class="task-icon">💎</span><div><div class="task-name">وصل کردن ولت TON</div><div class="task-pts">+300 امتیاز | +3000 MINAB168</div></div></div><button class="task-btn" id="btn-wallet" onclick="connectWallet()">وصل</button></div>
+<div class="task-card"><div class="task-info"><span class="task-icon">💎</span><div><div class="task-name">وصل ولت TON</div><div class="task-pts">+300 امتیاز | +3000 MINAB168</div></div></div><button class="task-btn" id="btn-wallet" onclick="connectWallet()">وصل</button></div>
 </div>
-<div class="section"><h2>💎 خرید توکن MINAB168</h2></div>
+<div class="section"><h2>💎 خرید MINAB168</h2></div>
 <div class="ton-packages">
-<div class="ton-pkg" onclick="buyTokens(1,10000)"><div class="ton-amount">1 💎</div><div class="ton-tokens">10,000 MINAB168</div></div>
-<div class="ton-pkg popular" onclick="buyTokens(5,60000)"><div class="badge">محبوب</div><div class="ton-amount">5 💎</div><div class="ton-tokens">60,000 MINAB168</div><div class="ton-bonus">+10,000 بونوس</div></div>
-<div class="ton-pkg" onclick="buyTokens(10,130000)"><div class="ton-amount">10 💎</div><div class="ton-tokens">130,000 MINAB168</div><div class="ton-bonus">+30,000 بونوس</div></div>
-<div class="ton-pkg" onclick="buyTokens(20,300000)"><div class="ton-amount">20 💎</div><div class="ton-tokens">300,000 MINAB168</div><div class="ton-bonus">+100,000 بونوس</div></div>
+<div class="ton-pkg" onclick="buyInfo()"><div class="ton-amount">1 💎</div><div class="ton-tokens">10,000 MINAB168</div></div>
+<div class="ton-pkg popular" onclick="buyInfo()"><div class="badge">محبوب</div><div class="ton-amount">5 💎</div><div class="ton-tokens">60,000 MINAB168</div><div class="ton-bonus">+10,000 بونوس</div></div>
+<div class="ton-pkg" onclick="buyInfo()"><div class="ton-amount">10 💎</div><div class="ton-tokens">130,000 MINAB168</div><div class="ton-bonus">+30,000 بونوس</div></div>
+<div class="ton-pkg" onclick="buyInfo()"><div class="ton-amount">20 💎</div><div class="ton-tokens">300,000 MINAB168</div><div class="ton-bonus">+100,000 بونوس</div></div>
 </div>
 </div>
-
 <div id="page-quiz" class="page">
 <div class="section"><h2>🧠 کوییز میناب</h2><div class="quiz-card" id="quiz-box"></div></div>
 </div>
-
 <div id="page-wp" class="page">
-<div class="wp-section"><div class="wp-title">📄 وایت پیپر MINAB168</div><div class="wp-text">توکن MINAB168 به یاد 168 شهید مدرسه میناب ساخته شده. این پروژه توسط تیمی از علاقمندان واقعی اداره میشه - نه دلالان و کاسبان دو روزه. هدف ما زنده نگه داشتن یاد شهدا و ساخت یک جامعه قوی در بلاکچین TON هست.</div></div>
+<div class="wp-section"><div class="wp-title">📄 وایت پیپر MINAB168</div><div class="wp-text">توکن MINAB168 به یاد 168 شهید مدرسه میناب ساخته شده. تیمی از علاقمندان واقعی - نه دلالان و کاسبان دو روزه.</div></div>
 <div class="wp-section"><div class="wp-title">📊 اطلاعات توکن</div>
-<div class="wp-stat"><span class="wp-stat-label">نام توکن</span><span class="wp-stat-value">MINAB168</span></div>
+<div class="wp-stat"><span class="wp-stat-label">نام</span><span class="wp-stat-value">MINAB168</span></div>
 <div class="wp-stat"><span class="wp-stat-label">شبکه</span><span class="wp-stat-value">TON Blockchain</span></div>
 <div class="wp-stat"><span class="wp-stat-label">کل عرضه</span><span class="wp-stat-value">21,000,000</span></div>
-<div class="wp-stat"><span class="wp-stat-label">تاریخ لانچ</span><span class="wp-stat-value">90 روز دیگر</span></div>
+<div class="wp-stat"><span class="wp-stat-label">لانچ</span><span class="wp-stat-value">90 روز دیگر</span></div>
 </div>
 <div class="wp-section"><div class="wp-title">🥧 توکنومیکس</div>
 <div class="tokenomics">
-<div class="token-item"><div class="token-pct">40%</div><div class="token-label">ایردراپ و تسک</div></div>
+<div class="token-item"><div class="token-pct">40%</div><div class="token-label">ایردراپ</div></div>
 <div class="token-item"><div class="token-pct">25%</div><div class="token-label">پری سیل</div></div>
 <div class="token-item"><div class="token-pct">20%</div><div class="token-label">نقدینگی</div></div>
-<div class="token-item"><div class="token-pct">15%</div><div class="token-label">تیم و توسعه</div></div>
-</div></div>
-<div class="wp-section"><div class="wp-title">🗺️ نقشه راه</div><div class="wp-text">
-<b style="color:#6c63ff">فاز 1 (الان):</b> لانچ مینی اپ، ایردراپ، تسک<br><br>
-<b style="color:#6c63ff">فاز 2 (45 روز):</b> پری سیل، لیست DEX<br><br>
-<b style="color:#6c63ff">فاز 3 (90 روز):</b> لانچ رسمی با روند صعودی BTC<br><br>
-<b style="color:#6c63ff">فاز 4:</b> لیست CEX، NFT شهدا
+<div class="token-item"><div class="token-pct">15%</div><div class="token-label">تیم</div></div>
 </div></div>
 </div>
-
 <div class="nav">
 <div class="nav-btn active" onclick="showPage('home',this)">🏠</div>
 <div class="nav-btn" onclick="showPage('tasks',this)">📋</div>
@@ -196,222 +175,154 @@ body{background:#0a0a1a;color:#fff;font-family:sans-serif;min-height:100vh;user-
 <div class="nav-btn" onclick="showPage('wp',this)">📄</div>
 </div>
 </div>
-
 <script>
 const tg = window.Telegram.WebApp;
 tg.expand();
 
-const SUPABASE_URL = "https://nrbahixaupzfbbixegwo.supabase.co";
-const SUPABASE_KEY = "sb_publishable_XLmSYz20ZAEJUd4p7bdG-A_a1gGLsyJ";
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-let userId = tg.initDataUnsafe?.user?.id || null; const _uid = new URLSearchParams(window.location.search).get("uid"); if(_uid && !userId) userId = _uid; if(userId) localStorage.setItem("uid", String(userId));
-let username = tg.initDataUnsafe?.user?.username || tg.initDataUnsafe?.user?.first_name || 'کاربر';
-let state = {points:0, tokens:0, taps:0, tasks:[], quiz_step:0, referral_count:0};
-
-async function loadUser() {
-  if (!userId) {
-    state = JSON.parse(localStorage.getItem('minab') || '{"points":0,"tokens":0,"taps":0,"tasks":[],"quiz_step":0,"referral_count":0}');
-    updateUI();
-    return;
-  }
-  const {data} = await sb.from('users').select('*').eq('id', userId).single();
-  if (data) {
-    state.points = data.points || 0;
-    state.tokens = data.tokens || 0;
-    state.taps = data.taps || 0;
-    state.tasks = data.tasks || [];
-    state.quiz_step = data.quiz_step || 0;
-    state.referral_count = data.referral_count || 0;
-  }
-  updateUI();
-}
-
-async function saveUser() {
-  if (!userId) { localStorage.setItem('minab', JSON.stringify(state)); return; }
-  await sb.from('users').upsert({
-    id: userId,
-    username: username,
-    points: state.points,
-    tokens: state.tokens,
-    taps: state.taps,
-    tasks: state.tasks,
-    quiz_step: state.quiz_step
-  });
-}
-
-let tonConnectUI = null;
-try {
-  tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-    manifestUrl: 'https://jazzy-pixie-6169f8.netlify.app/tonconnect-manifest.json',
-    buttonRootId: null
-  });
-  tonConnectUI.onStatusChange(async wallet => {
-    const btn = document.getElementById('ton-btn');
-    const wBtn = document.getElementById('btn-wallet');
-    if (wallet) {
-      btn.textContent = '💎 وصل';
-      btn.classList.add('connected');
-      if (!state.tasks.includes('wallet')) {
-        state.tasks.push('wallet');
-        state.points += 300;
-        state.tokens += 3000;
-        await saveUser();
-        updateUI();
-        tg.showAlert('💎 ولت وصل شد! +300 امتیاز و +3000 MINAB168');
-      }
-      if (wBtn) { wBtn.textContent='✅'; wBtn.className='task-btn done'; wBtn.disabled=true; }
-    } else {
-      btn.textContent = '💎 ولت';
-      btn.classList.remove('connected');
-    }
-  });
-} catch(e) {}
+const SKEY = 'minab_v2';
+let state = JSON.parse(localStorage.getItem(SKEY) || '{"points":0,"tokens":0,"taps":0,"tasks":[],"quiz_step":0,"referral_count":0}');
+let userId = tg.initDataUnsafe && tg.initDataUnsafe.user ? String(tg.initDataUnsafe.user.id) : localStorage.getItem('minab_uid');
 
 const QUIZ = [
-  {q:"مدرسه میناب در چه استانی بمباران شد؟", opts:["هرمزگان","کرمان","فارس"], ans:0},
-  {q:"چند نفر در بمباران مدرسه میناب شهید شدند؟", opts:["120 نفر","168 نفر","200 نفر"], ans:1},
-  {q:"میناب بیشتر به چه محصولی مشهور است؟", opts:["پسته","خرما","زعفران"], ans:1},
-  {q:"رودخانه میناب به کجا می ریزد؟", opts:["دریای عمان","خلیج فارس","دریاچه ارومیه"], ans:0},
-  {q:"میناب در کدام منطقه ایران قرار دارد؟", opts:["جنوب","شمال","غرب"], ans:0},
+  {q:"مدرسه میناب در چه استانی بمباران شد؟",opts:["هرمزگان","کرمان","فارس"],ans:0},
+  {q:"چند نفر شهید شدند؟",opts:["120 نفر","168 نفر","200 نفر"],ans:1},
+  {q:"میناب به چه محصولی مشهور است؟",opts:["پسته","خرما","زعفران"],ans:1},
+  {q:"رودخانه میناب به کجا میریزد؟",opts:["دریای عمان","خلیج فارس","دریاچه ارومیه"],ans:0},
+  {q:"میناب در کدام منطقه ایران؟",opts:["جنوب","شمال","غرب"],ans:0},
 ];
 
 const launchDate = new Date(Date.now() + 90*24*60*60*1000);
-function updateTimer() {
-  const diff = launchDate - new Date();
-  if (diff <= 0) return;
-  const d = Math.floor(diff/(1000*60*60*24));
-  const h = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
-  const m = Math.floor((diff%(1000*60*60))/(1000*60));
-  const s = Math.floor((diff%(1000*60))/1000);
-  document.getElementById('t-days').textContent = String(d).padStart(2,'0');
-  document.getElementById('t-hours').textContent = String(h).padStart(2,'0');
-  document.getElementById('t-mins').textContent = String(m).padStart(2,'0');
-  document.getElementById('t-secs').textContent = String(s).padStart(2,'0');
+function updateTimer(){
+  const d = launchDate - new Date();
+  if(d<=0) return;
+  document.getElementById('t-days').textContent = String(Math.floor(d/86400000)).padStart(2,'0');
+  document.getElementById('t-hours').textContent = String(Math.floor(d%86400000/3600000)).padStart(2,'0');
+  document.getElementById('t-mins').textContent = String(Math.floor(d%3600000/60000)).padStart(2,'0');
+  document.getElementById('t-secs').textContent = String(Math.floor(d%60000/1000)).padStart(2,'0');
 }
-setInterval(updateTimer, 1000);
+setInterval(updateTimer,1000);
 updateTimer();
 
-function hideSplash() {
+document.getElementById('enter-btn').onclick = function(){
   document.getElementById('splash').style.opacity='0';
   setTimeout(()=>{
     document.getElementById('splash').style.display='none';
     document.getElementById('app').style.display='block';
-    loadUser();
+    updateUI();
   },1000);
-}
+};
 
-function updateUI() {
+function save(){ localStorage.setItem(SKEY, JSON.stringify(state)); }
+
+function updateUI(){
   document.getElementById('score').textContent = state.points;
-  document.getElementById('token-count').textContent = state.tokens.toLocaleString();
-  document.getElementById('ref-count').textContent = state.referral_count;
-  document.getElementById('ref-tokens').textContent = (state.referral_count * 5000).toLocaleString() + ' MINAB168 از رفرال';
-  document.getElementById('tapbar').style.width = (state.taps % 100) + '%';
-  ['telegram','twitter','bot','hashtag','wallet'].forEach(t => {
-    const b = document.getElementById('btn-' + t);
-    if (b && state.tasks.includes(t)) { b.textContent='✅'; b.className='task-btn done'; b.disabled=true; }
+  document.getElementById('token-count').textContent = (state.tokens||0).toLocaleString();
+  document.getElementById('ref-count').textContent = state.referral_count||0;
+  document.getElementById('ref-tokens').textContent = ((state.referral_count||0)*5000).toLocaleString()+' MINAB168 از رفرال';
+  document.getElementById('tapbar').style.width = (state.taps%100)+'%';
+  ['telegram','twitter','bot','hashtag','wallet'].forEach(t=>{
+    const b=document.getElementById('btn-'+t);
+    if(b&&state.tasks.includes(t)){b.textContent='✅';b.className='task-btn done';b.disabled=true;}
   });
 }
 
-let lastTap = 0;
-let tapBuffer = 0;
-const tapBtn = document.getElementById('tapbtn');
-
-async function handleTap(e) {
+let lastTap=0;
+const tapBtn=document.getElementById('tapbtn');
+function handleTap(e){
   e.preventDefault();
-  const now = Date.now();
-  if (now - lastTap < 80) return;
-  lastTap = now;
+  const now=Date.now();
+  if(now-lastTap<80) return;
+  lastTap=now;
   state.taps++;
   state.points++;
-  tapBuffer++;
-  const x = (e.touches ? e.touches[0].clientX : e.clientX) || 200;
-  const y = (e.touches ? e.touches[0].clientY : e.clientY) || 200;
-  showFloat('+1', x, y);
+  save();
+  const x=(e.touches?e.touches[0].clientX:e.clientX)||200;
+  const y=(e.touches?e.touches[0].clientY:e.clientY)||200;
+  showFloat('+1',x,y);
   updateUI();
-  if (tapBuffer >= 10) { tapBuffer = 0; await saveUser(); }
 }
+tapBtn.addEventListener('touchstart',handleTap,{passive:false});
+tapBtn.addEventListener('click',handleTap);
 
-tapBtn.addEventListener('touchstart', handleTap, {passive:false});
-tapBtn.addEventListener('click', handleTap);
-
-function showFloat(txt, x, y) {
-  const el = document.createElement('div');
-  el.className = 'float-pts';
-  el.textContent = txt;
-  el.style.left = (x-15)+'px';
-  el.style.top = (y-15)+'px';
+function showFloat(txt,x,y){
+  const el=document.createElement('div');
+  el.className='float-pts';el.textContent=txt;
+  el.style.left=(x-15)+'px';el.style.top=(y-15)+'px';
   document.body.appendChild(el);
-  setTimeout(()=>el.remove(), 800);
+  setTimeout(()=>el.remove(),800);
 }
 
-function connectWallet() {
-  if (tonConnectUI) tonConnectUI.openModal();
-}
+let tonConnectUI=null;
+try{
+  tonConnectUI=new TON_CONNECT_UI.TonConnectUI({
+    manifestUrl:'https://jazzy-pixie-6169f8.netlify.app/tonconnect-manifest.json',
+    buttonRootId:null
+  });
+  tonConnectUI.onStatusChange(wallet=>{
+    const btn=document.getElementById('ton-btn');
+    const wBtn=document.getElementById('btn-wallet');
+    if(wallet){
+      btn.textContent='💎 وصل';btn.classList.add('connected');
+      if(!state.tasks.includes('wallet')){
+        state.tasks.push('wallet');state.points+=300;state.tokens+=3000;
+        save();updateUI();tg.showAlert('💎 ولت وصل! +300 امتیاز و +3000 MINAB168');
+      }
+      if(wBtn){wBtn.textContent='✅';wBtn.className='task-btn done';wBtn.disabled=true;}
+    }else{btn.textContent='💎 ولت';btn.classList.remove('connected');}
+  });
+}catch(e){}
 
-async function doTask(name, url) {
-  window.open(url, '_blank');
-  setTimeout(async () => {
-    if (!state.tasks.includes(name)) {
-      const pts = name==='hashtag'?200 : name==='bot'?50 : 100;
-      const tkn = pts * 10;
-      state.tasks.push(name);
-      state.points += pts;
-      state.tokens += tkn;
-      await saveUser();
-      updateUI();
-      tg.showAlert('✅ +' + pts + ' امتیاز و +' + tkn + ' MINAB168 گرفتی!');
+function connectWallet(){if(tonConnectUI)tonConnectUI.openModal();}
+
+function doTask(name,url){
+  window.open(url,'_blank');
+  setTimeout(()=>{
+    if(!state.tasks.includes(name)){
+      const pts=name==='hashtag'?200:name==='bot'?50:100;
+      const tkn=pts*10;
+      state.tasks.push(name);state.points+=pts;state.tokens+=tkn;
+      save();updateUI();
+      tg.showAlert('+'+pts+' امتیاز و +'+tkn+' MINAB168');
     }
-  }, 2000);
+  },2000);
 }
 
-function copyRefLink() {
-  const refLink = 'https://t.me/MinabTapBot?start=' + (userId||'0');
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(refLink).then(()=> tg.showAlert('لینک کپی شد!\n\n' + refLink));
-  } else {
-    tg.showAlert('لینک دعوت تو:\n\n' + refLink);
+function copyRefLink(){
+  const uid=userId||'0';
+  const link='https://t.me/MinabTapBot?start='+uid;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(link).then(()=>tg.showAlert('لینک کپی شد!\n\n'+link));
+  }else{
+    tg.showAlert('لینک دعوت:\n\n'+link);
   }
 }
 
-function buyTokens(ton, tokens) {
-  if (!tonConnectUI || !tonConnectUI.wallet) {
-    tg.showAlert('اول ولت TON رو وصل کن! 💎');
-    return;
-  }
-  tg.showAlert('پری سیل 45 روز دیگه فعال میشه!\n\nالان تسک انجام بده و رفرال بیار تا توکن رایگان بگیری!');
-}
+function buyInfo(){tg.showAlert('پری سیل 45 روز دیگه فعال میشه!\nالان تسک انجام بده توکن رایگان بگیر!');}
 
-function showPage(name, el) {
+function showPage(name,el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
   el.classList.add('active');
-  if (name==='quiz') renderQuiz();
+  if(name==='quiz')renderQuiz();
 }
 
-function renderQuiz() {
-  const box = document.getElementById('quiz-box');
-  if (state.quiz_step >= QUIZ.length) {
-    box.innerHTML = '<div style="text-align:center;padding:30px;color:#3ecfcf">🏆 همه سوالا رو جواب دادی!</div>';
-    return;
-  }
-  const q = QUIZ[state.quiz_step];
-  box.innerHTML = '<div class="quiz-q">سوال '+(state.quiz_step+1)+' از '+QUIZ.length+'<br><br>'+q.q+'</div>'+
+function renderQuiz(){
+  const box=document.getElementById('quiz-box');
+  if(state.quiz_step>=QUIZ.length){box.innerHTML='<div style="text-align:center;padding:30px;color:#3ecfcf">🏆 همه سوالا رو جواب دادی!</div>';return;}
+  const q=QUIZ[state.quiz_step];
+  box.innerHTML='<div class="quiz-q">سوال '+(state.quiz_step+1)+' از '+QUIZ.length+'<br><br>'+q.q+'</div>'+
     q.opts.map((o,i)=>'<button class="quiz-opt" onclick="answerQuiz('+i+')">'+o+'</button>').join('');
 }
 
-async function answerQuiz(i) {
-  const q = QUIZ[state.quiz_step];
-  const btns = document.querySelectorAll('.quiz-opt');
+function answerQuiz(i){
+  const q=QUIZ[state.quiz_step];
+  const btns=document.querySelectorAll('.quiz-opt');
   btns.forEach(b=>b.disabled=true);
   btns[q.ans].classList.add('correct');
-  if (i !== q.ans) { btns[i].classList.add('wrong'); setTimeout(renderQuiz,1200); return; }
-  state.points += 50;
-  state.tokens += 500;
-  state.quiz_step++;
-  await saveUser();
-  setTimeout(renderQuiz, 800);
+  if(i!==q.ans){btns[i].classList.add('wrong');setTimeout(renderQuiz,1200);return;}
+  state.points+=50;state.tokens+=500;state.quiz_step++;
+  save();setTimeout(renderQuiz,800);
 }
 
 updateUI();
