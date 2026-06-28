@@ -205,7 +205,7 @@ const SUPABASE_URL = "https://nrbahixaupzfbbixegwo.supabase.co";
 const SUPABASE_KEY = "sb_publishable_XLmSYz20ZAEJUd4p7bdG-A_a1gGLsyJ";
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-let userId = tg.initDataUnsafe?.user?.id || null;
+let userId = tg.initDataUnsafe?.user?.id || String(Math.random()).slice(2);
 let username = tg.initDataUnsafe?.user?.username || tg.initDataUnsafe?.user?.first_name || 'کاربر';
 let state = {points:0, tokens:0, taps:0, tasks:[], quiz_step:0, referral_count:0};
 
