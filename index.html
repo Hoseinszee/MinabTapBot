@@ -207,7 +207,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let userId = tg.initDataUnsafe?.user?.id || null; const _uid = new URLSearchParams(window.location.search).get("uid"); if(_uid && !userId) userId = _uid; if(userId) localStorage.setItem("uid", String(userId));
 let username = tg.initDataUnsafe?.user?.username || tg.initDataUnsafe?.user?.first_name || 'کاربر';
-let state = {points:0, tokens:0, taps:0, tasks:[], quiz_step:0, referral_count:0};
+let state = JSON.parse(localStorage.getItem("minab") || "{"points":0,"tokens":0,"taps":0,"tasks":[],"quiz_step":0,"referral_count":0}");
 
 async function loadUser() {
   if (!userId) {
@@ -297,7 +297,7 @@ function hideSplash() {
   setTimeout(()=>{
     document.getElementById('splash').style.display='none';
     document.getElementById('app').style.display='block';
-    if(!localStorage.getItem("minab_loaded")) { loadUser(); localStorage.setItem("minab_loaded","1"); } else { state = JSON.parse(localStorage.getItem("minab") || "{}"); updateUI(); }
+    loadUser();
   },1000);
 }
 
