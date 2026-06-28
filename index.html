@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>میناب تسک</title>
+<title>MINAB168 Task</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;outline:none}
 body{background:#0a0a1a;color:#fff;font-family:sans-serif;min-height:100vh;user-select:none;overflow-x:hidden}
 #splash{position:fixed;top:0;left:0;width:100%;height:100%;z-index:999;background:#000;transition:opacity 1s}
 #splash img{width:100%;height:100%;object-fit:cover;opacity:0.9}
 #splash .overlay{position:absolute;bottom:0;left:0;width:100%;padding:30px;background:linear-gradient(transparent,#000);text-align:center}
-#splash h2{font-size:22px;color:#fff;margin-bottom:8px}
-#splash p{color:#aaa;font-size:14px;line-height:1.6}
-#splash .btn{margin-top:20px;background:#6c63ff;border:none;color:#fff;padding:14px 40px;border-radius:25px;font-size:16px;cursor:pointer}
+#splash h2{font-size:20px;color:#fff;margin-bottom:8px}
+#splash p{color:#aaa;font-size:13px;line-height:1.6}
+#splash .btn{margin-top:20px;background:linear-gradient(135deg,#6c63ff,#3ecfcf);border:none;color:#fff;padding:14px 40px;border-radius:25px;font-size:16px;cursor:pointer;font-weight:bold}
 .header{background:linear-gradient(135deg,#1a0a2e,#0a1a2e);padding:15px 20px;text-align:center;border-bottom:1px solid #6c63ff44;display:flex;align-items:center;justify-content:space-between}
 .header-title{flex:1;text-align:center}
-.header h1{font-size:20px;font-weight:bold}
-.header p{opacity:0.6;font-size:11px}
+.header h1{font-size:18px;font-weight:bold}
+.header p{opacity:0.6;font-size:10px;margin-top:2px}
 #ton-btn{background:linear-gradient(135deg,#0098ea,#006bb3);border:none;color:#fff;padding:8px 12px;border-radius:20px;font-size:11px;cursor:pointer}
 #ton-btn.connected{background:linear-gradient(135deg,#00c853,#007a33)}
-.points-card{background:linear-gradient(135deg,#1a1a3e,#0a2a2e);margin:16px;border-radius:20px;padding:20px;text-align:center;border:1px solid #6c63ff55}
+.lang-btn{background:#1a1a2e;border:1px solid #6c63ff44;color:#aaa;padding:6px 10px;border-radius:15px;font-size:10px;cursor:pointer;margin-right:5px}
+.points-card{background:linear-gradient(135deg,#1a1a3e,#0a2a2e);margin:16px;border-radius:20px;padding:20px;text-align:center;border:1px solid #6c63ff55;box-shadow:0 0 20px #6c63ff22}
 .score{font-size:48px;font-weight:bold;background:linear-gradient(135deg,#6c63ff,#3ecfcf);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .tap-area{position:relative;width:calc(100% - 32px);height:240px;overflow:hidden;background:url('https://i.postimg.cc/KjZHtZtK/701027.jpg') center/cover;border-radius:20px;margin:0 16px;display:block;border:none;cursor:pointer;touch-action:manipulation}
 .tap-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,50,0.25);display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
@@ -42,7 +42,7 @@ body{background:#0a0a1a;color:#fff;font-family:sans-serif;min-height:100vh;user-
 .task-btn.done{background:#2a2a4a;color:#555;cursor:default}
 .quiz-card{background:#1a1a2e;border-radius:15px;padding:20px;border:1px solid #ffffff11}
 .quiz-q{font-size:14px;margin-bottom:15px;line-height:1.7}
-.quiz-opt{background:#0d0d20;border:1px solid #6c63ff33;color:#fff;width:100%;padding:12px;border-radius:10px;margin-bottom:8px;cursor:pointer;font-size:13px;text-align:right}
+.quiz-opt{background:#0d0d20;border:1px solid #6c63ff33;color:#fff;width:100%;padding:12px;border-radius:10px;margin-bottom:8px;cursor:pointer;font-size:13px;text-align:left}
 .quiz-opt.correct{border-color:#00ff88;background:#00ff8822;color:#00ff88}
 .quiz-opt.wrong{border-color:#ff4466;background:#ff446622;color:#ff4466}
 .lb-box{background:#1a1a2e;border-radius:15px;padding:20px}
@@ -55,12 +55,13 @@ body{background:#0a0a1a;color:#fff;font-family:sans-serif;min-height:100vh;user-
 .nav-btn.active{color:#6c63ff}
 .page{display:none;padding-bottom:80px}
 .page.active{display:block}
-.memorial{background:linear-gradient(135deg,#1a0a0a,#0a0a1a);border:1px solid #ff000033;border-radius:15px;margin:16px;padding:20px;text-align:center}
-.memorial p{color:#aaa;font-size:13px;line-height:1.8;margin-top:10px}
+.memorial{border-radius:15px;margin:16px;overflow:hidden;position:relative}
+.memorial img{width:100%;height:200px;object-fit:cover;opacity:0.85}
+.memorial-text{position:absolute;bottom:0;left:0;width:100%;padding:15px;background:linear-gradient(transparent,rgba(0,0,0,0.9));text-align:center}
 .float-pts{position:fixed;font-size:16px;font-weight:bold;color:gold;pointer-events:none;animation:floatup 0.8s ease-out forwards;z-index:9999}
 @keyframes floatup{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-70px)}}
 .timer-card{background:linear-gradient(135deg,#0a1a0a,#0a0a1a);border:1px solid #00ff8833;border-radius:20px;margin:16px;padding:20px;text-align:center}
-.timer-title{color:#00ff88;font-size:14px;margin-bottom:15px;font-weight:bold}
+.timer-title{color:#00ff88;font-size:13px;margin-bottom:15px;font-weight:bold}
 .timer-boxes{display:flex;justify-content:center;gap:10px}
 .timer-box{background:#1a1a2e;border-radius:12px;padding:12px 10px;min-width:60px;border:1px solid #00ff8833}
 .timer-num{font-size:28px;font-weight:bold;color:#00ff88}
@@ -71,103 +72,162 @@ body{background:#0a0a1a;color:#fff;font-family:sans-serif;min-height:100vh;user-
 .ton-pkg{background:#1a1a2e;border-radius:15px;padding:15px;text-align:center;border:1px solid #0098ea33;cursor:pointer;position:relative}
 .ton-pkg.popular{border-color:#6c63ff}
 .ton-pkg .badge{position:absolute;top:-8px;right:50%;transform:translateX(50%);background:#6c63ff;color:#fff;font-size:10px;padding:2px 8px;border-radius:10px}
-.ton-amount{font-size:24px;font-weight:bold;color:#0098ea}
-.ton-tokens{color:#3ecfcf;font-size:13px;margin-top:4px}
+.ton-amount{font-size:22px;font-weight:bold;color:#0098ea}
+.ton-tokens{color:#3ecfcf;font-size:12px;margin-top:4px}
 .ton-bonus{color:#00ff88;font-size:11px;margin-top:2px}
 .wp-section{background:#1a1a2e;border-radius:15px;margin:16px;padding:20px;border:1px solid #ffffff11}
-.wp-title{color:#6c63ff;font-size:16px;font-weight:bold;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #ffffff11}
+.wp-title{color:#6c63ff;font-size:15px;font-weight:bold;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #ffffff11}
 .wp-text{color:#ccc;font-size:13px;line-height:1.8}
 .wp-stat{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #ffffff11}
 .wp-stat:last-child{border-bottom:none}
-.wp-stat-label{color:#aaa;font-size:13px}
-.wp-stat-value{color:#3ecfcf;font-size:13px;font-weight:bold}
+.wp-stat-label{color:#aaa;font-size:12px}
+.wp-stat-value{color:#3ecfcf;font-size:12px;font-weight:bold}
 .tokenomics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
 .token-item{background:#0a0a1a;border-radius:10px;padding:10px;text-align:center;border:1px solid #ffffff11}
-.token-pct{font-size:20px;font-weight:bold;color:#6c63ff}
-.token-label{font-size:11px;color:#aaa;margin-top:4px}
+.token-pct{font-size:18px;font-weight:bold;color:#6c63ff}
+.token-label{font-size:10px;color:#aaa;margin-top:4px}
+.highlight{color:#6c63ff;font-weight:bold}
 </style>
 </head>
 <body>
 <div id="splash">
 <img src="https://i.postimg.cc/j2JfjfFs/minab168-poster.jpg" alt="Minab168">
 <div class="overlay">
-<h2>به یاد شهدای میناب</h2>
-<p>168 روح بی گناه که فراموش نخواهند شد</p>
-<button class="btn" id="enter-btn">ورود به میناب تسک</button>
+<h2>🕊️ In Memory of Minab Martyrs</h2>
+<p>168 innocent souls — Never forgotten<br>Rebuild • Remember • Rise</p>
+<button class="btn" id="enter-btn">Enter MINAB168 Task →</button>
 </div>
 </div>
+
 <div id="app" style="display:none">
 <div class="header">
-<div class="header-title"><h1>میناب تسک</h1><p>#Minab168 | MINAB168 Token</p></div>
-<button id="ton-btn" onclick="connectWallet()">💎 ولت</button>
+<button class="lang-btn" onclick="toggleLang()" id="lang-btn">🌐 FA</button>
+<div class="header-title">
+<h1 id="header-title">🎯 MINAB168 Task</h1>
+<p id="header-sub">#Minab168 | TON Blockchain</p>
 </div>
+<button id="ton-btn" onclick="connectWallet()">💎 Wallet</button>
+</div>
+
 <div id="page-home" class="page active">
 <div class="points-card">
 <div class="score" id="score">0</div>
-<div style="color:#aaa;font-size:12px;margin-top:4px">امتیاز | <span id="token-count">0</span> MINAB168</div>
+<div style="color:#aaa;font-size:12px;margin-top:4px" id="score-sub">Points | <span id="token-count">0</span> MINAB168</div>
 </div>
-<div class="tap-info">هر تب = 1 امتیاز</div>
+<div class="tap-info" id="tap-info-text">Tap = 1 Point 🪙</div>
 <button class="tap-area" id="tapbtn">
-<div class="tap-overlay"><div class="tap-coin">🪙</div><div class="tap-hint">روی خلیج فارس تب کن!</div></div>
+<div class="tap-overlay"><div class="tap-coin">🪙</div><div class="tap-hint" id="tap-hint-text">Tap on Persian Gulf!</div></div>
 </button>
 <div class="tap-progress"><div class="tap-bar" id="tapbar" style="width:0%"></div></div>
+
 <div class="ref-card">
-<div style="color:#3ecfcf;font-size:13px;margin-bottom:10px">👥 رفرال های تو</div>
+<div style="color:#3ecfcf;font-size:13px;margin-bottom:10px" id="ref-title">👥 Your Referrals</div>
 <div class="ref-count" id="ref-count">0</div>
-<div style="color:#aaa;font-size:12px;margin-top:5px" id="ref-tokens">0 MINAB168 از رفرال</div>
-<button style="margin-top:12px;background:linear-gradient(135deg,#6c63ff,#3ecfcf);border:none;color:#fff;padding:10px 25px;border-radius:15px;cursor:pointer;font-size:13px" onclick="copyRefLink()">🔗 کپی لینک دعوت</button>
+<div style="color:#aaa;font-size:12px;margin-top:5px" id="ref-tokens-text">0 MINAB168 from referrals</div>
+<button style="margin-top:12px;background:linear-gradient(135deg,#6c63ff,#3ecfcf);border:none;color:#fff;padding:10px 25px;border-radius:15px;cursor:pointer;font-size:13px" onclick="copyRefLink()" id="ref-btn">🔗 Copy Invite Link</button>
 </div>
+
 <div class="timer-card">
-<div class="timer-title">🚀 تا لانچ MINAB168</div>
+<div class="timer-title" id="timer-title">🚀 MINAB168 Token Launch Countdown</div>
 <div class="timer-boxes">
-<div class="timer-box"><div class="timer-num" id="t-days">90</div><div class="timer-label">روز</div></div>
-<div class="timer-box"><div class="timer-num" id="t-hours">00</div><div class="timer-label">ساعت</div></div>
-<div class="timer-box"><div class="timer-num" id="t-mins">00</div><div class="timer-label">دقیقه</div></div>
-<div class="timer-box"><div class="timer-num" id="t-secs">00</div><div class="timer-label">ثانیه</div></div>
+<div class="timer-box"><div class="timer-num" id="t-days">90</div><div class="timer-label" id="tl-days">Days</div></div>
+<div class="timer-box"><div class="timer-num" id="t-hours">00</div><div class="timer-label" id="tl-hours">Hours</div></div>
+<div class="timer-box"><div class="timer-num" id="t-mins">00</div><div class="timer-label" id="tl-mins">Mins</div></div>
+<div class="timer-box"><div class="timer-num" id="t-secs">00</div><div class="timer-label" id="tl-secs">Secs</div></div>
 </div>
+<div style="color:#aaa;font-size:12px;margin-top:12px" id="timer-desc">Launch aligned with Bitcoin bull run 🔥</div>
 </div>
+
 <div class="memorial">
-<div style="font-size:28px">🕊️</div>
-<div style="color:#ff6666;font-size:16px;margin-top:8px">#Minab168</div>
-<p>در یادبود 168 دانش آموز و معلم شهید مدرسه میناب</p>
+<img src="https://i.postimg.cc/QxkPDy1v/minab-school-poster.jpg" alt="Minab School">
+<div class="memorial-text">
+<div style="color:#ff6666;font-size:14px;font-weight:bold">#Minab168</div>
+<div style="color:#aaa;font-size:12px;margin-top:4px" id="memorial-text">In memory of 168 students and teachers martyred in Minab school bombing</div>
 </div>
 </div>
+</div>
+
 <div id="page-tasks" class="page">
-<div class="section"><h2>📋 تسک ها</h2>
-<div class="task-card"><div class="task-info"><span class="task-icon">📢</span><div><div class="task-name">جوین کانال تلگرام</div><div class="task-pts">+100 امتیاز | +1000 MINAB168</div></div></div><button class="task-btn" id="btn-telegram" onclick="doTask('telegram','https://t.me/f1vra')">انجام</button></div>
-<div class="task-card"><div class="task-info"><span class="task-icon">🐦</span><div><div class="task-name">فالو تویتر</div><div class="task-pts">+100 امتیاز | +1000 MINAB168</div></div></div><button class="task-btn" id="btn-twitter" onclick="doTask('twitter','https://twitter.com/Hoseinsze')">انجام</button></div>
-<div class="task-card"><div class="task-info"><span class="task-icon">🤖</span><div><div class="task-name">استارت بات</div><div class="task-pts">+50 امتیاز | +500 MINAB168</div></div></div><button class="task-btn" id="btn-bot" onclick="doTask('bot','https://t.me/MinabTapBot')">انجام</button></div>
-<div class="task-card"><div class="task-info"><span class="task-icon">📣</span><div><div class="task-name">دعوت دوستان</div><div class="task-pts">+500 امتیاز | +5000 MINAB168 هر نفر</div></div></div><button class="task-btn" onclick="copyRefLink()">دعوت</button></div>
-<div class="task-card"><div class="task-info"><span class="task-icon">🕊️</span><div><div class="task-name">هشتگ #Minab168</div><div class="task-pts">+200 امتیاز | +2000 MINAB168</div></div></div><button class="task-btn" id="btn-hashtag" onclick="doTask('hashtag','https://twitter.com/intent/tweet?text=%23Minab168')">انجام</button></div>
-<div class="task-card"><div class="task-info"><span class="task-icon">💎</span><div><div class="task-name">وصل ولت TON</div><div class="task-pts">+300 امتیاز | +3000 MINAB168</div></div></div><button class="task-btn" id="btn-wallet" onclick="connectWallet()">وصل</button></div>
+<div class="section"><h2 id="tasks-title">📋 Tasks</h2>
+<div class="task-card"><div class="task-info"><span class="task-icon">📢</span><div><div class="task-name" id="t1-name">Join Telegram Channel</div><div class="task-pts">+100 pts | +1,000 MINAB168</div></div></div><button class="task-btn" id="btn-telegram" onclick="doTask('telegram','https://t.me/f1vra')">Go</button></div>
+<div class="task-card"><div class="task-info"><span class="task-icon">🐦</span><div><div class="task-name" id="t2-name">Follow on Twitter</div><div class="task-pts">+100 pts | +1,000 MINAB168</div></div></div><button class="task-btn" id="btn-twitter" onclick="doTask('twitter','https://twitter.com/Hoseinsze')">Go</button></div>
+<div class="task-card"><div class="task-info"><span class="task-icon">🤖</span><div><div class="task-name" id="t3-name">Start the Bot</div><div class="task-pts">+50 pts | +500 MINAB168</div></div></div><button class="task-btn" id="btn-bot" onclick="doTask('bot','https://t.me/MinabTapBot')">Go</button></div>
+<div class="task-card"><div class="task-info"><span class="task-icon">📣</span><div><div class="task-name" id="t4-name">Invite Friends</div><div class="task-pts">+500 pts | +5,000 MINAB168 each</div></div></div><button class="task-btn" onclick="copyRefLink()" id="t4-btn">Invite</button></div>
+<div class="task-card"><div class="task-info"><span class="task-icon">🕊️</span><div><div class="task-name" id="t5-name">Tweet #Minab168</div><div class="task-pts">+200 pts | +2,000 MINAB168</div></div></div><button class="task-btn" id="btn-hashtag" onclick="doTask('hashtag','https://twitter.com/intent/tweet?text=%23Minab168%20%23MINAB168Token')">Go</button></div>
+<div class="task-card"><div class="task-info"><span class="task-icon">💎</span><div><div class="task-name" id="t6-name">Connect TON Wallet</div><div class="task-pts">+300 pts | +3,000 MINAB168</div></div></div><button class="task-btn" id="btn-wallet" onclick="connectWallet()">Connect</button></div>
 </div>
-<div class="section"><h2>💎 خرید MINAB168</h2></div>
+
+<div class="section"><h2 id="buy-title">💎 Buy MINAB168</h2>
+<div style="color:#aaa;font-size:12px;margin-bottom:12px" id="buy-desc">Presale opens in 45 days. Early supporters get the best rates!</div>
+</div>
 <div class="ton-packages">
 <div class="ton-pkg" onclick="buyInfo()"><div class="ton-amount">1 💎</div><div class="ton-tokens">10,000 MINAB168</div></div>
-<div class="ton-pkg popular" onclick="buyInfo()"><div class="badge">محبوب</div><div class="ton-amount">5 💎</div><div class="ton-tokens">60,000 MINAB168</div><div class="ton-bonus">+10,000 بونوس</div></div>
-<div class="ton-pkg" onclick="buyInfo()"><div class="ton-amount">10 💎</div><div class="ton-tokens">130,000 MINAB168</div><div class="ton-bonus">+30,000 بونوس</div></div>
-<div class="ton-pkg" onclick="buyInfo()"><div class="ton-amount">20 💎</div><div class="ton-tokens">300,000 MINAB168</div><div class="ton-bonus">+100,000 بونوس</div></div>
+<div class="ton-pkg popular" onclick="buyInfo()"><div class="badge">Popular</div><div class="ton-amount">5 💎</div><div class="ton-tokens">60,000 MINAB168</div><div class="ton-bonus">+10K bonus</div></div>
+<div class="ton-pkg" onclick="buyInfo()"><div class="ton-amount">10 💎</div><div class="ton-tokens">130,000 MINAB168</div><div class="ton-bonus">+30K bonus</div></div>
+<div class="ton-pkg" onclick="buyInfo()"><div class="ton-amount">20 💎</div><div class="ton-tokens">300,000 MINAB168</div><div class="ton-bonus">+100K bonus</div></div>
 </div>
 </div>
+
 <div id="page-quiz" class="page">
-<div class="section"><h2>🧠 کوییز میناب</h2><div class="quiz-card" id="quiz-box"></div></div>
+<div class="section"><h2>🧠 Quiz</h2><div class="quiz-card" id="quiz-box"></div></div>
 </div>
+
 <div id="page-wp" class="page">
-<div class="wp-section"><div class="wp-title">📄 وایت پیپر MINAB168</div><div class="wp-text">توکن MINAB168 به یاد 168 شهید مدرسه میناب ساخته شده. تیمی از علاقمندان واقعی - نه دلالان و کاسبان دو روزه.</div></div>
-<div class="wp-section"><div class="wp-title">📊 اطلاعات توکن</div>
-<div class="wp-stat"><span class="wp-stat-label">نام</span><span class="wp-stat-value">MINAB168</span></div>
-<div class="wp-stat"><span class="wp-stat-label">شبکه</span><span class="wp-stat-value">TON Blockchain</span></div>
-<div class="wp-stat"><span class="wp-stat-label">کل عرضه</span><span class="wp-stat-value">21,000,000</span></div>
-<div class="wp-stat"><span class="wp-stat-label">لانچ</span><span class="wp-stat-value">90 روز دیگر</span></div>
+<div class="wp-section">
+<div class="wp-title">📄 MINAB168 Whitepaper</div>
+<div class="wp-text">The <span class="highlight">MINAB168</span> token was created in memory of 168 students and teachers who lost their lives in the Minab school bombing. This is a community-driven project built by genuine enthusiasts — not speculators or short-term traders.<br><br>
+Our mission: <span class="highlight">Remember the martyrs. Rebuild the school. Rise together.</span></div>
 </div>
-<div class="wp-section"><div class="wp-title">🥧 توکنومیکس</div>
+
+<div class="wp-section">
+<div class="wp-title">📊 Token Information</div>
+<div class="wp-stat"><span class="wp-stat-label">Token Name</span><span class="wp-stat-value">MINAB168</span></div>
+<div class="wp-stat"><span class="wp-stat-label">Network</span><span class="wp-stat-value">TON Blockchain</span></div>
+<div class="wp-stat"><span class="wp-stat-label">Total Supply</span><span class="wp-stat-value">21,000,000</span></div>
+<div class="wp-stat"><span class="wp-stat-label">Launch</span><span class="wp-stat-value">~90 Days</span></div>
+<div class="wp-stat"><span class="wp-stat-label">Listing</span><span class="wp-stat-value">DEX → CEX (verified)</span></div>
+</div>
+
+<div class="wp-section">
+<div class="wp-title">🥧 Tokenomics</div>
 <div class="tokenomics">
-<div class="token-item"><div class="token-pct">40%</div><div class="token-label">ایردراپ</div></div>
-<div class="token-item"><div class="token-pct">25%</div><div class="token-label">پری سیل</div></div>
-<div class="token-item"><div class="token-pct">20%</div><div class="token-label">نقدینگی</div></div>
-<div class="token-item"><div class="token-pct">15%</div><div class="token-label">تیم</div></div>
-</div></div>
+<div class="token-item"><div class="token-pct">40%</div><div class="token-label">Airdrop & Tasks</div></div>
+<div class="token-item"><div class="token-pct">25%</div><div class="token-label">Presale</div></div>
+<div class="token-item"><div class="token-pct">15%</div><div class="token-label">Liquidity</div></div>
+<div class="token-item"><div class="token-pct" style="color:#00ff88">15%</div><div class="token-label">School Rebuild*</div></div>
+<div class="token-item"><div class="token-pct" style="color:#ff6666">5%</div><div class="token-label">Team (Locked)</div></div>
 </div>
+<div style="color:#aaa;font-size:11px;margin-top:12px">* 15% allocated transparently for Minab school reconstruction over 5 years. Monthly buyback & burn to maintain value.</div>
+</div>
+
+<div class="wp-section">
+<div class="wp-title">🔒 Transparency & Trust</div>
+<div class="wp-text">
+• Team tokens are <span class="highlight">fully locked</span> — only 1-3% released for liquidity<br>
+• All smart contract code is <span class="highlight">open source</span> until team tokens unlock<br>
+• Wallet data updated nightly — no hidden allocations<br>
+• Monthly <span class="highlight">buyback & burn</span> with liquidity support<br>
+• Early supporters rewarded proportionally and fairly<br>
+• No political agenda — purely a community memorial project
+</div>
+</div>
+
+<div class="wp-section">
+<div class="wp-title">🗺️ Roadmap</div>
+<div class="wp-text">
+<span class="highlight">Phase 1 (Now):</span> Mini App launch, Airdrop, Tasks, Community building<br><br>
+<span class="highlight">Phase 2 (45 days):</span> Presale opens, DEX listing preparation<br><br>
+<span class="highlight">Phase 3 (90 days):</span> Official launch aligned with Bitcoin bull run<br><br>
+<span class="highlight">Phase 4:</span> CEX listings (verified exchanges), School fund activation, Sponsor program
+</div>
+</div>
+
+<div class="wp-section">
+<div class="wp-title">⚠️ Important Notice</div>
+<div class="wp-text" style="color:#ffaa44">Only invest what you can afford to lose. This project may take 6+ months to show results. We are committed to long-term value, not quick pumps. Your trust means everything to us.</div>
+</div>
+</div>
+
 <div class="nav">
 <div class="nav-btn active" onclick="showPage('home',this)">🏠</div>
 <div class="nav-btn" onclick="showPage('tasks',this)">📋</div>
@@ -175,20 +235,65 @@ body{background:#0a0a1a;color:#fff;font-family:sans-serif;min-height:100vh;user-
 <div class="nav-btn" onclick="showPage('wp',this)">📄</div>
 </div>
 </div>
+
 <script>
 const tg = window.Telegram.WebApp;
 tg.expand();
 
-const SKEY = 'minab_v2';
+const SKEY = 'minab_v3';
 let state = JSON.parse(localStorage.getItem(SKEY) || '{"points":0,"tokens":0,"taps":0,"tasks":[],"quiz_step":0,"referral_count":0}');
-let userId = tg.initDataUnsafe && tg.initDataUnsafe.user ? String(tg.initDataUnsafe.user.id) : localStorage.getItem('minab_uid');
+let userId = (tg.initDataUnsafe && tg.initDataUnsafe.user) ? String(tg.initDataUnsafe.user.id) : localStorage.getItem('minab_uid');
+if(userId) localStorage.setItem('minab_uid', userId);
+
+let lang = localStorage.getItem('minab_lang') || 'en';
+
+const T = {
+  en: {
+    header: '🎯 MINAB168 Task',
+    tap_info: 'Tap = 1 Point 🪙',
+    tap_hint: 'Tap on Persian Gulf!',
+    ref_title: '👥 Your Referrals',
+    ref_btn: '🔗 Copy Invite Link',
+    timer_title: '🚀 MINAB168 Token Launch Countdown',
+    timer_desc: 'Launch aligned with Bitcoin bull run 🔥',
+    memorial: 'In memory of 168 students and teachers martyred in Minab school bombing',
+    tasks_title: '📋 Tasks',
+    t1: 'Join Telegram Channel', t2: 'Follow on Twitter', t3: 'Start the Bot',
+    t4: 'Invite Friends', t4btn: 'Invite', t5: 'Tweet #Minab168', t6: 'Connect TON Wallet',
+    buy_title: '💎 Buy MINAB168',
+    buy_desc: 'Presale opens in 45 days. Early supporters get the best rates!',
+    lang_btn: '🌐 FA',
+    ton_btn: '💎 Wallet',
+    score_sub: 'Points | ',
+    ref_tokens: ' MINAB168 from referrals',
+  },
+  fa: {
+    header: '🎯 میناب تسک',
+    tap_info: 'هر تب = ۱ امتیاز 🪙',
+    tap_hint: 'روی خلیج فارس تب کن!',
+    ref_title: '👥 رفرال های تو',
+    ref_btn: '🔗 کپی لینک دعوت',
+    timer_title: '🚀 تا لانچ MINAB168',
+    timer_desc: 'با شروع روند صعودی بیتکوین لانچ میشه 🔥',
+    memorial: 'در یادبود ۱۶۸ دانش آموز و معلم شهید مدرسه میناب',
+    tasks_title: '📋 تسک ها',
+    t1: 'جوین کانال تلگرام', t2: 'فالو تویتر', t3: 'استارت بات',
+    t4: 'دعوت دوستان', t4btn: 'دعوت', t5: 'هشتگ #Minab168', t6: 'وصل ولت TON',
+    buy_title: '💎 خرید MINAB168',
+    buy_desc: 'پری سیل ۴۵ روز دیگه فعال میشه. زودتر بیا!',
+    lang_btn: '🌐 EN',
+    ton_btn: '💎 ولت',
+    score_sub: 'امتیاز | ',
+    ref_tokens: ' MINAB168 از رفرال',
+  }
+};
 
 const QUIZ = [
-  {q:"مدرسه میناب در چه استانی بمباران شد؟",opts:["هرمزگان","کرمان","فارس"],ans:0},
-  {q:"چند نفر شهید شدند؟",opts:["120 نفر","168 نفر","200 نفر"],ans:1},
-  {q:"میناب به چه محصولی مشهور است؟",opts:["پسته","خرما","زعفران"],ans:1},
-  {q:"رودخانه میناب به کجا میریزد؟",opts:["دریای عمان","خلیج فارس","دریاچه ارومیه"],ans:0},
-  {q:"میناب در کدام منطقه ایران؟",opts:["جنوب","شمال","غرب"],ans:0},
+  {q:"In which province was Minab school bombed?", opts:["Hormozgan","Kerman","Fars"], ans:0},
+  {q:"How many people were martyred in the Minab school bombing?", opts:["120","168","200"], ans:1},
+  {q:"What is Minab most famous for?", opts:["Pistachios","Dates","Saffron"], ans:1},
+  {q:"Where does the Minab river flow into?", opts:["Sea of Oman","Persian Gulf","Lake Urmia"], ans:0},
+  {q:"In which region of Iran is Minab located?", opts:["South","North","West"], ans:0},
 ];
 
 const launchDate = new Date(Date.now() + 90*24*60*60*1000);
@@ -203,11 +308,47 @@ function updateTimer(){
 setInterval(updateTimer,1000);
 updateTimer();
 
+function applyLang(){
+  const t = T[lang];
+  document.getElementById('header-title').textContent = t.header;
+  document.getElementById('tap-info-text').textContent = t.tap_info;
+  document.getElementById('tap-hint-text').textContent = t.tap_hint;
+  document.getElementById('ref-title').textContent = t.ref_title;
+  document.getElementById('ref-btn').textContent = t.ref_btn;
+  document.getElementById('timer-title').textContent = t.timer_title;
+  document.getElementById('timer-desc').textContent = t.timer_desc;
+  document.getElementById('memorial-text').textContent = t.memorial;
+  document.getElementById('tasks-title').textContent = t.tasks_title;
+  document.getElementById('t1-name').textContent = t.t1;
+  document.getElementById('t2-name').textContent = t.t2;
+  document.getElementById('t3-name').textContent = t.t3;
+  document.getElementById('t4-name').textContent = t.t4;
+  document.getElementById('t4-btn').textContent = t.t4btn;
+  document.getElementById('t5-name').textContent = t.t5;
+  document.getElementById('t6-name').textContent = t.t6;
+  document.getElementById('buy-title').textContent = t.buy_title;
+  document.getElementById('buy-desc').textContent = t.buy_desc;
+  document.getElementById('lang-btn').textContent = t.lang_btn;
+  document.getElementById('ton-btn').textContent = t.ton_btn;
+  document.getElementById('tl-days').textContent = lang==='fa'?'روز':'Days';
+  document.getElementById('tl-hours').textContent = lang==='fa'?'ساعت':'Hours';
+  document.getElementById('tl-mins').textContent = lang==='fa'?'دقیقه':'Mins';
+  document.getElementById('tl-secs').textContent = lang==='fa'?'ثانیه':'Secs';
+  document.documentElement.dir = lang==='fa'?'rtl':'ltr';
+}
+
+function toggleLang(){
+  lang = lang==='en'?'fa':'en';
+  localStorage.setItem('minab_lang', lang);
+  applyLang();
+}
+
 document.getElementById('enter-btn').onclick = function(){
   document.getElementById('splash').style.opacity='0';
   setTimeout(()=>{
     document.getElementById('splash').style.display='none';
     document.getElementById('app').style.display='block';
+    applyLang();
     updateUI();
   },1000);
 };
@@ -215,10 +356,12 @@ document.getElementById('enter-btn').onclick = function(){
 function save(){ localStorage.setItem(SKEY, JSON.stringify(state)); }
 
 function updateUI(){
+  const t = T[lang];
   document.getElementById('score').textContent = state.points;
   document.getElementById('token-count').textContent = (state.tokens||0).toLocaleString();
+  document.getElementById('score-sub').innerHTML = t.score_sub+'<span id="token-count">'+(state.tokens||0).toLocaleString()+'</span> MINAB168';
   document.getElementById('ref-count').textContent = state.referral_count||0;
-  document.getElementById('ref-tokens').textContent = ((state.referral_count||0)*5000).toLocaleString()+' MINAB168 از رفرال';
+  document.getElementById('ref-tokens-text').textContent = ((state.referral_count||0)*5000).toLocaleString()+t.ref_tokens;
   document.getElementById('tapbar').style.width = (state.taps%100)+'%';
   ['telegram','twitter','bot','hashtag','wallet'].forEach(t=>{
     const b=document.getElementById('btn-'+t);
@@ -255,20 +398,20 @@ function showFloat(txt,x,y){
 let tonConnectUI=null;
 try{
   tonConnectUI=new TON_CONNECT_UI.TonConnectUI({
-    manifestUrl:'https://jazzy-pixie-6169f8.netlify.app/tonconnect-manifest.json',
+    manifestUrl:'https://hoseinszee.github.io/MinabTapBot/tonconnect-manifest.json',
     buttonRootId:null
   });
   tonConnectUI.onStatusChange(wallet=>{
     const btn=document.getElementById('ton-btn');
     const wBtn=document.getElementById('btn-wallet');
     if(wallet){
-      btn.textContent='💎 وصل';btn.classList.add('connected');
+      btn.textContent='💎 ✅';btn.classList.add('connected');
       if(!state.tasks.includes('wallet')){
         state.tasks.push('wallet');state.points+=300;state.tokens+=3000;
-        save();updateUI();tg.showAlert('💎 ولت وصل! +300 امتیاز و +3000 MINAB168');
+        save();updateUI();tg.showAlert('💎 Wallet connected! +300 pts & +3,000 MINAB168');
       }
       if(wBtn){wBtn.textContent='✅';wBtn.className='task-btn done';wBtn.disabled=true;}
-    }else{btn.textContent='💎 ولت';btn.classList.remove('connected');}
+    }else{btn.textContent=T[lang].ton_btn;btn.classList.remove('connected');}
   });
 }catch(e){}
 
@@ -282,7 +425,7 @@ function doTask(name,url){
       const tkn=pts*10;
       state.tasks.push(name);state.points+=pts;state.tokens+=tkn;
       save();updateUI();
-      tg.showAlert('+'+pts+' امتیاز و +'+tkn+' MINAB168');
+      tg.showAlert('+'+pts+' pts & +'+tkn+' MINAB168!');
     }
   },2000);
 }
@@ -291,13 +434,13 @@ function copyRefLink(){
   const uid=userId||'0';
   const link='https://t.me/MinabTapBot?start='+uid;
   if(navigator.clipboard){
-    navigator.clipboard.writeText(link).then(()=>tg.showAlert('لینک کپی شد!\n\n'+link));
+    navigator.clipboard.writeText(link).then(()=>tg.showAlert('Link copied!\n\n'+link));
   }else{
-    tg.showAlert('لینک دعوت:\n\n'+link);
+    tg.showAlert('Your invite link:\n\n'+link);
   }
 }
 
-function buyInfo(){tg.showAlert('پری سیل 45 روز دیگه فعال میشه!\nالان تسک انجام بده توکن رایگان بگیر!');}
+function buyInfo(){tg.showAlert('Presale opens in 45 days!\n\nComplete tasks now to earn free MINAB168 tokens!');}
 
 function showPage(name,el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -309,9 +452,12 @@ function showPage(name,el){
 
 function renderQuiz(){
   const box=document.getElementById('quiz-box');
-  if(state.quiz_step>=QUIZ.length){box.innerHTML='<div style="text-align:center;padding:30px;color:#3ecfcf">🏆 همه سوالا رو جواب دادی!</div>';return;}
+  if(state.quiz_step>=QUIZ.length){
+    box.innerHTML='<div style="text-align:center;padding:30px;color:#3ecfcf">🏆 All questions answered!<br><br>+250 pts earned!</div>';
+    return;
+  }
   const q=QUIZ[state.quiz_step];
-  box.innerHTML='<div class="quiz-q">سوال '+(state.quiz_step+1)+' از '+QUIZ.length+'<br><br>'+q.q+'</div>'+
+  box.innerHTML='<div class="quiz-q">Question '+(state.quiz_step+1)+' of '+QUIZ.length+'<br><br>'+q.q+'</div>'+
     q.opts.map((o,i)=>'<button class="quiz-opt" onclick="answerQuiz('+i+')">'+o+'</button>').join('');
 }
 
@@ -325,6 +471,7 @@ function answerQuiz(i){
   save();setTimeout(renderQuiz,800);
 }
 
+applyLang();
 updateUI();
 </script>
 </body>
