@@ -297,7 +297,7 @@ function hideSplash() {
   setTimeout(()=>{
     document.getElementById('splash').style.display='none';
     document.getElementById('app').style.display='block';
-    loadUser();
+    if(!localStorage.getItem("minab_loaded")) { loadUser(); localStorage.setItem("minab_loaded","1"); } else { state = JSON.parse(localStorage.getItem("minab") || "{}"); updateUI(); }
   },1000);
 }
 
