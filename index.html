@@ -233,6 +233,7 @@ Our mission: <span class="highlight">Remember the martyrs. Rebuild the school. R
 <div class="nav-btn" onclick="showPage('tasks',this)">📋</div>
 <div class="nav-btn" onclick="showPage('quiz',this)">🧠</div>
 <div class="nav-btn" onclick="showPage('wp',this)">📄</div>
+<div class="nav-btn" onclick="showGame()">🎁</div>
 </div>
 </div>
 
@@ -471,6 +472,53 @@ function answerQuiz(i){
 
 applyLang();
 updateUI();
+</script>
+
+<div id="game-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:9999;align-items:center;justify-content:center;flex-direction:column">
+<div style="background:linear-gradient(135deg,#1a0a2e,#0a1a2e);border:2px solid #6c63ff;border-radius:20px;padding:30px;width:88%;text-align:center">
+<div style="color:#3ecfcf;font-size:13px">50/50 AIRDROP</div>
+<div style="font-size:50px;margin:15px 0" id="box-emoji">🎁</div>
+<div style="font-size:18px;font-weight:bold;color:#fff">Daily Lucky Box</div>
+<div style="color:#aaa;font-size:13px;margin:10px 0" id="box-desc">Open your free daily box!</div>
+<div id="box-result" style="display:none;padding:15px;border-radius:10px;margin:15px 0"></div>
+<button id="open-box-btn" onclick="openBox()" style="background:linear-gradient(135deg,#6c63ff,#3ecfcf);border:none;color:#fff;padding:14px;border-radius:25px;font-size:15px;cursor:pointer;width:100%;font-weight:bold">Open Box 🎁</button>
+<br><button onclick="closeGame()" style="background:transparent;border:1px solid #333;color:#666;padding:10px 30px;border-radius:20px;font-size:13px;cursor:pointer;margin-top:10px">Close</button>
+</div></div>
+
+<script>
+function showGame(){
+  var modal=document.getElementById("game-modal");
+  modal.style.display="flex";
+  var last=localStorage.getItem("last_box");
+  var today=new Date().toDateString();
+  var btn=document.getElementById("open-box-btn");
+  var desc=document.getElementById("box-desc");
+  if(last===today){btn.disabled=true;btn.style.opacity="0.5";desc.textContent="Come back tomorrow!";}
+  else{btn.disabled=false;btn.style.opacity="1";desc.textContent="Open your free daily box!";}
+  document.getElementById("box-result").style.display="none";
+  document.getElementById("box-emoji").textContent="🎁";
+}
+function closeGame(){document.getElementById("game-modal").style.display="none";}
+function openBox(){
+  var today=new Date().toDateString();
+  localStorage.setItem("last_box",today);
+  document.getElementById("open-box-btn").disabled=true;
+  document.getElementById("open-box-btn").style.opacity="0.5";
+  var rand=Math.random();
+  var prize,emoji,color;
+  if(rand<0.50){var amt=Math.floor(Math.random()*900+100);prize=amt+" MINAB168";emoji="🪙";color="#3ecfcf";state.tokens+=amt;}
+  else if(rand<0.75){prize="500 MINAB168 BONUS";emoji="💎";color="#6c63ff";state.tokens+=500;}
+  else if(rand<0.90){prize="Telegram Gift - Coming Soon!";emoji="🎀";color="#ff6b9d";}
+  else{prize="NFT Whitelist Spot!";emoji="🖼️";color="#ffaa00";}
+  state.points+=50;save();updateUI();
+  var result=document.getElementById("box-result");
+  result.style.display="block";
+  result.style.background="rgba(108,99,255,0.1)";
+  result.style.border="1px solid "+color;
+  result.innerHTML="<div style='font-size:40px'>"+emoji+"</div><div style='color:"+color+";font-size:16px;font-weight:bold;margin-top:8px'>"+prize+"</div><div style='color:#aaa;font-size:12px;margin-top:5px'>+50 bonus points!</div>";
+  document.getElementById("box-emoji").textContent=emoji;
+  tg.showAlert(emoji+" You won: "+prize+"!");
+}
 </script>
 </body>
 </html>
