@@ -56,7 +56,7 @@ async def add_referral(referrer_id):
 
 def get_keyboard(user_id, lang):
     t = TEXTS[lang]
-    webapp_url = f"https://jazzy-pixie-6169f8.netlify.app/?uid={user_id}"
+    webapp_url = f"https://hoseinszee.github.io/MinabTapBot/?uid={user_id}"
     return InlineKeyboardMarkup([
         [InlineKeyboardButton(t["open"], web_app=WebAppInfo(url=webapp_url))],
         [InlineKeyboardButton(t["reflink"], callback_data="reflink"), InlineKeyboardButton(t["stats"], callback_data="mystats")],
