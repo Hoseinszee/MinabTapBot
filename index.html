@@ -1,110 +1,759 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>F1VRA Airdrop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>ZKR — Trust the Code</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#0a0a1a;color:#fff;font-family:sans-serif;min-height:100vh}
-.header{background:linear-gradient(135deg,#6c63ff,#3ecfcf);padding:30px 20px;text-align:center}
-.header h1{font-size:28px;font-weight:bold}
-.points-card{background:#1a1a2e;margin:20px;border-radius:20px;padding:25px;text-align:center;border:1px solid #6c63ff44}
-.score{font-size:48px;font-weight:bold;color:#6c63ff}
-.section{margin:20px}
-.section h2{color:#3ecfcf;margin-bottom:15px}
-.task-card{background:#1a1a2e;border-radius:15px;padding:18px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;border:1px solid #ffffff11}
-.task-info{display:flex;align-items:center;gap:12px}
-.task-icon{font-size:24px}
-.task-name{font-size:15px;font-weight:bold}
-.task-pts{color:#3ecfcf;font-size:13px;margin-top:3px}
-.task-btn{background:#6c63ff;border:none;color:#fff;padding:10px 18px;border-radius:10px;cursor:pointer;font-size:13px}
-.task-btn.done{background:#2a2a4a;color:#666}
-.quiz-card{background:#1a1a2e;border-radius:15px;padding:20px;border:1px solid #ffffff11}
-.quiz-q{font-size:16px;margin-bottom:15px;line-height:1.6}
-.quiz-opt{background:#0a0a1a;border:1px solid #6c63ff44;color:#fff;width:100%;padding:12px;border-radius:10px;margin-bottom:8px;cursor:pointer;font-size:14px;text-align:right}
-.quiz-opt.correct{border-color:#00ff88;background:#00ff8822}
-.quiz-opt.wrong{border-color:#ff4466;background:#ff446622}
-.lb-item{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #ffffff11}
-.lb-pts{color:#6c63ff;font-weight:bold}
-.nav{display:flex;background:#1a1a2e;position:fixed;bottom:0;width:100%;border-top:1px solid #ffffff11}
-.nav-btn{flex:1;padding:15px;text-align:center;cursor:pointer;font-size:22px}
-.nav-btn.active{color:#6c63ff}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;outline:none}
+body{background:#060310;color:#fff;font-family:sans-serif;min-height:100vh;user-select:none;overflow-x:hidden;position:relative}
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(rgba(0,0,0,0.65),rgba(0,0,0,0.65)),url('https://i.postimg.cc/MZ5k2Cgv/ccd7a14e-29f1-4d84-bbbf-f6143174640b.png') center/cover no-repeat;z-index:-2}
+canvas#particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1}
+
+/* SPLASH */
+#splash{position:fixed;top:0;left:0;width:100%;height:100%;z-index:999;background:#000;transition:opacity 1s}
+#splash img{width:100%;height:100%;object-fit:cover;opacity:0.92}
+#splash .overlay{position:absolute;bottom:0;left:0;width:100%;padding:36px 30px;background:linear-gradient(transparent,rgba(0,0,0,0.95));text-align:center}
+#splash h2{font-size:26px;font-weight:800;color:#fff;margin-bottom:6px}
+#splash p{color:#aaa;font-size:13px;line-height:1.7;margin-bottom:4px}
+#splash .btn{margin-top:22px;background:linear-gradient(135deg,#6c63ff,#3ecfcf);border:none;color:#fff;padding:14px 44px;border-radius:25px;font-size:16px;cursor:pointer;font-weight:bold;box-shadow:0 0 28px rgba(108,99,255,0.55)}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,rgba(26,10,46,0.95),rgba(10,26,46,0.95));padding:14px 16px;border-bottom:1px solid rgba(108,99,255,0.2);display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(20px);position:sticky;top:0;z-index:50}
+.header-title{flex:1;text-align:center}
+.header h1{font-size:18px;font-weight:bold}
+.header p{opacity:0.5;font-size:10px;margin-top:2px}
+#ton-btn{background:linear-gradient(135deg,#0098ea,#006bb3);border:none;color:#fff;padding:8px 12px;border-radius:20px;font-size:11px;cursor:pointer}
+#ton-btn.connected{background:linear-gradient(135deg,#00c853,#007a33)}
+
+
+/* POINTS */
+.points-card{background:linear-gradient(135deg,rgba(26,26,62,0.8),rgba(10,42,46,0.8));margin:16px;border-radius:24px;padding:22px;text-align:center;border:1px solid rgba(108,99,255,0.3);box-shadow:0 0 32px rgba(108,99,255,0.18);backdrop-filter:blur(12px)}
+.score{font-size:52px;font-weight:bold;background:linear-gradient(135deg,#8b7fff,#3ecfcf);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+/* TAP */
+@keyframes tapglow{0%,100%{box-shadow:0 0 16px rgba(108,99,255,0.25)}50%{box-shadow:0 0 40px rgba(108,99,255,0.6),0 0 60px rgba(62,207,207,0.2)}}
+.tap-area{position:relative;width:calc(100% - 32px);height:240px;overflow:hidden;background:url('https://i.postimg.cc/WpZbCxFz/Chat-GPT-Image-Jul-2-2026-02-46-21-AM.png') center/cover;border-radius:22px;margin:0 16px;display:block;border:none;cursor:pointer;touch-action:manipulation;animation:tapglow 3s ease-in-out infinite}
+.tap-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,40,0.05);display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.tap-coin{font-size:58px;filter:drop-shadow(0 0 18px gold)}
+.tap-hint{color:#fff;font-size:13px;margin-top:8px;text-shadow:0 2px 8px #000}
+.tap-info{text-align:center;color:#8888aa;font-size:12px;margin:8px 16px 4px}
+.tap-progress{background:rgba(26,26,46,0.6);border-radius:10px;height:6px;margin:0 16px 12px;overflow:hidden}
+.tap-bar{height:100%;background:linear-gradient(90deg,#6c63ff,#3ecfcf);border-radius:10px;transition:width 0.1s}
+@keyframes coinbounce{0%{transform:scale(1)}35%{transform:scale(1.4) rotate(-8deg)}65%{transform:scale(0.9) rotate(4deg)}100%{transform:scale(1)}}
+.tap-coin.popping{animation:coinbounce 0.3s ease-out}
+
+/* SECTIONS */
+.section{margin:16px}
+.section h2{color:#3ecfcf;margin-bottom:12px;font-size:15px;text-shadow:0 0 8px rgba(62,207,207,0.3)}
+
+/* TASKS */
+.task-card{background:rgba(20,18,45,0.75);border-radius:16px;padding:14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(255,255,255,0.07);backdrop-filter:blur(8px)}
+.task-card.support-card{border:1px solid rgba(108,99,255,0.4);background:linear-gradient(135deg,rgba(26,10,46,0.8),rgba(20,18,45,0.8))}
+.task-info{display:flex;align-items:center;gap:10px}
+.task-icon{font-size:22px}
+.task-name{font-size:15px;font-weight:600}
+.task-pts{color:#3ecfcf;font-size:12px;margin-top:2px}
+.task-btn{background:linear-gradient(135deg,#6c63ff,#3ecfcf);border:none;color:#fff;padding:10px 16px;border-radius:10px;cursor:pointer;font-size:12px;white-space:nowrap;box-shadow:0 0 12px rgba(108,99,255,0.3)}
+.task-btn.done{background:rgba(42,42,74,0.6);color:#555;cursor:default;box-shadow:none}
+
+/* TIMER */
+.timer-card{background:linear-gradient(135deg,rgba(0,18,8,0.8),rgba(8,8,24,0.8));border:1px solid rgba(0,255,136,0.18);border-radius:22px;margin:16px;padding:20px;text-align:center}
+.timer-title{color:#00ff88;font-size:13px;margin-bottom:15px;font-weight:bold}
+.timer-boxes{display:flex;justify-content:center;gap:10px}
+.timer-box{background:rgba(20,20,46,0.7);border-radius:14px;padding:12px 10px;min-width:60px;border:1px solid rgba(0,255,136,0.15)}
+.timer-num{font-size:28px;font-weight:bold;color:#00ff88}
+.timer-label{font-size:10px;color:#667;margin-top:4px}
+
+/* REF CARD */
+.ref-card{background:rgba(20,18,45,0.7);border-radius:18px;margin:16px;padding:20px;border:1px solid rgba(108,99,255,0.22);text-align:center}
+.ref-count{font-size:36px;font-weight:bold;color:#8b7fff}
+
+/* TON PACKAGES */
+.ton-packages{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px}
+.ton-pkg{background:rgba(20,18,45,0.75);border-radius:16px;padding:15px;text-align:center;border:1px solid rgba(0,152,234,0.25);cursor:pointer;position:relative;backdrop-filter:blur(8px)}
+.ton-pkg.popular{border-color:#8b7fff;box-shadow:0 0 20px rgba(108,99,255,0.2)}
+.ton-pkg .badge{position:absolute;top:-8px;right:50%;transform:translateX(50%);background:linear-gradient(135deg,#6c63ff,#3ecfcf);color:#fff;font-size:10px;padding:2px 8px;border-radius:10px}
+.ton-amount{font-size:22px;font-weight:bold;color:#0098ea}
+.ton-tokens{color:#3ecfcf;font-size:12px;margin-top:4px}
+.ton-bonus{color:#00ff88;font-size:11px;margin-top:2px}
+
+/* QUIZ */
+.quiz-card{background:rgba(20,18,45,0.75);border-radius:16px;padding:20px;border:1px solid rgba(255,255,255,0.07);backdrop-filter:blur(8px)}
+.quiz-q{font-size:14px;margin-bottom:15px;line-height:1.7;color:#eee}
+.quiz-opt{background:rgba(13,13,32,0.8);border:1px solid rgba(108,99,255,0.25);color:#fff;width:100%;padding:12px;border-radius:10px;margin-bottom:8px;cursor:pointer;font-size:13px;text-align:left}
+.quiz-opt.correct{border-color:#00ff88;background:rgba(0,255,136,0.1);color:#00ff88}
+.quiz-opt.wrong{border-color:#ff4466;background:rgba(255,68,102,0.1);color:#ff4466}
+
+/* LUCKY BOX */
+#game-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:9999;align-items:center;justify-content:center;flex-direction:column}
+.game-box{background:linear-gradient(135deg,rgba(26,10,46,0.98),rgba(10,26,46,0.98));border:2px solid rgba(108,99,255,0.5);border-radius:24px;padding:30px;width:88%;max-width:380px;text-align:center;box-shadow:0 0 60px rgba(108,99,255,0.3)}
+
+/* WHITEPAPER */
+.wp-section{background:rgba(20,18,45,0.7);border-radius:16px;margin:16px;padding:20px;border:1px solid rgba(255,255,255,0.07);backdrop-filter:blur(8px)}
+.wp-title{color:#8b7fff;font-size:15px;font-weight:bold;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.07)}
+.wp-text{color:#bbb;font-size:13px;line-height:1.8}
+.wp-stat{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.07)}
+.wp-stat:last-child{border-bottom:none}
+.wp-stat-label{color:#888;font-size:12px}
+.wp-stat-value{color:#3ecfcf;font-size:12px;font-weight:bold}
+.tokenomics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.token-item{background:rgba(10,10,30,0.8);border-radius:10px;padding:10px;text-align:center;border:1px solid rgba(255,255,255,0.07)}
+.token-pct{font-size:18px;font-weight:bold;color:#8b7fff}
+.token-label{font-size:10px;color:#888;margin-top:4px}
+.highlight{color:#8b7fff;font-weight:bold}
+
+/* LEADERBOARD */
+.lb-box{background:rgba(20,18,45,0.7);border-radius:16px;padding:20px;backdrop-filter:blur(8px)}
+.lb-item{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.07)}
+.lb-item:last-child{border-bottom:none}
+.lb-name{flex:1;margin:0 10px;font-size:14px}
+.lb-pts{color:#8b7fff;font-weight:bold}
+
+/* NAV */
+.nav{display:flex;position:fixed;bottom:0;width:100%;z-index:100;background:rgba(8,6,20,0.9);backdrop-filter:blur(24px);border-top:1px solid rgba(108,99,255,0.2)}
+.nav-btn{flex:1;padding:13px;text-align:center;cursor:pointer;font-size:18px;color:#444;transition:color 0.2s}
+.nav-btn.active{color:#8b7fff;filter:drop-shadow(0 0 6px rgba(108,99,255,0.6))}
 .page{display:none;padding-bottom:80px}
 .page.active{display:block}
+
+/* FLOAT */
+.float-pts{position:fixed;font-size:16px;font-weight:bold;color:gold;pointer-events:none;animation:floatup 0.8s ease-out forwards;z-index:9999}
+@keyframes floatup{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-70px)}}
 </style>
 </head>
 <body>
-<div class="header"><h1>🎯 F1VRA Airdrop</h1><p>تسک انجام بده، جایزه بگیر!</p></div>
+<canvas id="particles"></canvas>
+
+<div id="splash">
+<img src="https://i.postimg.cc/hvBKyVzP/f2b92a51-bf5a-4895-9920-ffa95f989ed9.png" alt="ZKR">
+<div class="overlay">
+<h2>🔐 ZKR</h2>
+<p>Privacy • Community • TON Blockchain</p>
+<p style="color:#8b7fff;font-size:12px">Trust the Code. Not the Team.</p>
+<button class="btn" id="enter-btn">Enter ZKR →</button>
+</div>
+</div>
+
+<div id="app" style="display:none">
+
+<!-- HEADER -->
+<div class="header">
+
+<div class="header-title">
+<h1 id="header-title">🔐 ZKR</h1>
+<p id="header-sub">ZKR | TON Blockchain</p>
+</div>
+<button id="ton-btn" onclick="connectWallet()">💎 Wallet</button>
+</div>
+
+<!-- HOME PAGE -->
 <div id="page-home" class="page active">
-<div class="points-card"><div class="score" id="score">0</div><div>امتیاز کل</div></div>
-<div class="section"><h2>📊 وضعیت تو</h2>
-<div class="task-card"><div class="task-info"><span class="task-icon">✅</span><div><div class="task-name">تسک‌های انجام شده</div><div class="task-pts" id="tasks-done">0 از 4</div></div></div></div>
-</div></div>
-<div id="page-tasks" class="page"><div class="section"><h2>📋 تسک‌ها</h2>
-<div class="task-card"><div class="task-info"><span class="task-icon">📢</span><div><div class="task-name">جوین کانال تلگرام</div><div class="task-pts">+100 امتیاز</div></div></div><button class="task-btn" id="btn-telegram" onclick="doTask('telegram','https://t.me/f1vra')">انجام</button></div>
-<div class="task-card"><div class="task-info"><span class="task-icon">🐦</span><div><div class="task-name">فالو تویتر</div><div class="task-pts">+100 امتیاز</div></div></div><button class="task-btn" id="btn-twitter" onclick="doTask('twitter','https://twitter.com/Hoseinsze')">انجام</button></div>
-<div class="task-card"><div class="task-info"><span class="task-icon">🤖</span><div><div class="task-name">استارت بات</div><div class="task-pts">+50 امتیاز</div></div></div><button class="task-btn" id="btn-bot" onclick="doTask('bot','https://t.me/MinabTapBot')">انجام</button></div>
-<div class="task-card"><div class="task-info"><span class="task-icon">📣</span><div><div class="task-name">اشتراک‌گذاری</div><div class="task-pts">+150 امتیاز</div></div></div><button class="task-btn" id="btn-share" onclick="shareBot()">اشتراک</button></div>
-</div></div>
-<div id="page-quiz" class="page"><div class="section"><h2>🧠 کوییز میناب</h2><div class="quiz-card" id="quiz-box"></div></div></div>
-<div id="page-lb" class="page"><div class="section"><h2>🏆 لیدربورد</h2><div id="lb-box"></div></div></div>
+<div class="points-card">
+<div class="score" id="score">0</div>
+<div style="color:#888;font-size:12px;margin-top:6px" id="score-sub">Points | <span id="token-count">0</span> ZKR</div>
+</div>
+<div class="tap-info" id="tap-info-text">Tap = 1 Point 🪙</div>
+<button class="tap-area" id="tapbtn">
+<div class="tap-overlay">
+<div class="tap-coin" id="tap-coin-el">🪙</div>
+<div class="tap-hint" id="tap-hint-text">Tap to earn!</div>
+</div>
+</button>
+<div class="tap-progress"><div class="tap-bar" id="tapbar" style="width:0%"></div></div>
+
+<div class="ref-card">
+<div style="color:#3ecfcf;font-size:13px;margin-bottom:10px" id="ref-title">👥 Your Referrals</div>
+<div class="ref-count" id="ref-count">0</div>
+<div style="color:#888;font-size:12px;margin-top:5px" id="ref-sub">0 ZKR from referrals</div>
+<button style="margin-top:12px;background:linear-gradient(135deg,#6c63ff,#3ecfcf);border:none;color:#fff;padding:10px 25px;border-radius:15px;cursor:pointer;font-size:13px" onclick="copyRefLink()" id="ref-btn">🔗 Copy Invite Link</button>
+</div>
+
+<div class="timer-card">
+<div class="timer-title" id="timer-title">🚀 ZKR Token Launch Countdown</div>
+<div class="timer-boxes">
+<div class="timer-box"><div class="timer-num" id="t-days">90</div><div class="timer-label" id="tl-d">Days</div></div>
+<div class="timer-box"><div class="timer-num" id="t-hours">00</div><div class="timer-label" id="tl-h">Hours</div></div>
+<div class="timer-box"><div class="timer-num" id="t-mins">00</div><div class="timer-label" id="tl-m">Mins</div></div>
+<div class="timer-box"><div class="timer-num" id="t-secs">00</div><div class="timer-label" id="tl-s">Secs</div></div>
+</div>
+<div style="color:#888;font-size:12px;margin-top:12px" id="timer-desc">Launch aligned with Bitcoin bull run 🔥</div>
+</div>
+</div>
+
+<!-- TASKS PAGE -->
+<div id="page-tasks" class="page">
+<div class="section">
+<h2 id="tasks-title">📋 Tasks</h2>
+
+<div class="task-card">
+<div class="task-info">
+<span class="task-icon">📢</span>
+<div>
+<div class="task-name" id="t1-name">Join ZKR Official Channel</div>
+<div class="task-pts">+200 pts | +2,000 ZKR</div>
+</div>
+</div>
+<button class="task-btn" id="btn-channel" onclick="doTask('channel','https://t.me/zkr_official')">Join</button>
+</div>
+
+<div class="task-card">
+<div class="task-info">
+<span class="task-icon">🎬</span>
+<div>
+<div class="task-name" id="t2-name">Subscribe on YouTube</div>
+<div class="task-pts">+100 pts | +1,000 ZKR</div>
+</div>
+</div>
+<button class="task-btn" id="btn-youtube" onclick="doTask('youtube','https://youtube.com/@zkrtoken')">Go</button>
+</div>
+
+<div class="task-card">
+<div class="task-info">
+<span class="task-icon">🤖</span>
+<div>
+<div class="task-name" id="t3-name">Start the Bot</div>
+<div class="task-pts">+50 pts | +500 ZKR</div>
+</div>
+</div>
+<button class="task-btn" id="btn-bot" onclick="doTask('bot','https://t.me/zkrtonbot')">Go</button>
+</div>
+
+<div class="task-card">
+<div class="task-info">
+<span class="task-icon">📣</span>
+<div>
+<div class="task-name" id="t4-name">Invite Friends</div>
+<div class="task-pts">+500 pts | +5,000 ZKR each</div>
+</div>
+</div>
+<button class="task-btn" onclick="copyRefLink()" id="t4-btn">Invite</button>
+</div>
+
+<div class="task-card support-card">
+<div class="task-info">
+<span class="task-icon">💎</span>
+<div>
+<div class="task-name" id="t5-name">Support the Founder</div>
+<div class="task-pts">+300 pts | +3,000 ZKR | Send TON</div>
+</div>
+</div>
+<button class="task-btn" id="btn-support" onclick="supportFounder()">Support 💎</button>
+</div>
+
+</div>
+
+<div class="section">
+<h2 id="buy-title">💎 Buy ZKR</h2>
+<div style="color:#888;font-size:12px;margin-bottom:12px" id="buy-desc">Presale opens in 45 days. Early supporters get the best rates!</div>
+</div>
+
+<div class="ton-packages">
+<div class="ton-pkg" onclick="buyTokens(1,10000)">
+<div class="ton-amount">1 💎</div>
+<div class="ton-tokens">10,000 ZKR</div>
+</div>
+<div class="ton-pkg popular" onclick="buyTokens(5,60000)">
+<div class="badge">Popular</div>
+<div class="ton-amount">5 💎</div>
+<div class="ton-tokens">60,000 ZKR</div>
+<div class="ton-bonus">+10K bonus</div>
+</div>
+<div class="ton-pkg" onclick="buyTokens(10,130000)">
+<div class="ton-amount">10 💎</div>
+<div class="ton-tokens">130,000 ZKR</div>
+<div class="ton-bonus">+30K bonus</div>
+</div>
+<div class="ton-pkg" onclick="buyTokens(20,300000)">
+<div class="ton-amount">20 💎</div>
+<div class="ton-tokens">300,000 ZKR</div>
+<div class="ton-bonus">+100K bonus</div>
+</div>
+</div>
+</div>
+
+<!-- QUIZ PAGE -->
+<div id="page-quiz" class="page">
+<div class="section">
+<h2>🧠 Quiz</h2>
+<div class="quiz-card" id="quiz-box"></div>
+</div>
+</div>
+
+<!-- LEADERBOARD PAGE -->
+<div id="page-lb" class="page">
+<div class="section">
+<h2>🏆 Leaderboard</h2>
+<div class="lb-box" id="lb-box"></div>
+</div>
+</div>
+
+<!-- WHITEPAPER PAGE -->
+<div id="page-wp" class="page">
+
+<div class="wp-section">
+<div class="wp-title">🔐 ZKR — Trust the Code, Not the Team</div>
+<div class="wp-text">ZKR is a community-driven privacy token on TON Blockchain. Our core principle: <span class="highlight">Don't trust us — trust the code.</span><br><br>Every rule is enforced by smart contracts, not promises. Not even the founder can break them.</div>
+</div>
+
+<div class="wp-section">
+<div class="wp-title">📊 Token Info</div>
+<div class="wp-stat"><span class="wp-stat-label">Token Name</span><span class="wp-stat-value">ZKR</span></div>
+<div class="wp-stat"><span class="wp-stat-label">Current Network</span><span class="wp-stat-value">TON Blockchain</span></div>
+<div class="wp-stat"><span class="wp-stat-label">Future Network</span><span class="wp-stat-value">Base (Ethereum L2)</span></div>
+<div class="wp-stat"><span class="wp-stat-label">Total Supply</span><span class="wp-stat-value">21,000,000 (fixed)</span></div>
+<div class="wp-stat"><span class="wp-stat-label">Mintable</span><span class="wp-stat-value">❌ No — by design</span></div>
+<div class="wp-stat"><span class="wp-stat-label">Open Source</span><span class="wp-stat-value">✅ Verify yourself</span></div>
+</div>
+
+<div class="wp-section">
+<div class="wp-title">🥧 Tokenomics</div>
+<div class="tokenomics">
+<div class="token-item"><div class="token-pct">4%</div><div class="token-label">Airdrop & Tasks<br>850,000 ZKR</div></div>
+<div class="token-item"><div class="token-pct">35%</div><div class="token-label">Presale</div></div>
+<div class="token-item"><div class="token-pct">30%</div><div class="token-label">Liquidity Pool</div></div>
+<div class="token-item"><div class="token-pct" style="color:#00ff88">25%</div><div class="token-label">Buyback & Burn</div></div>
+<div class="token-item" style="grid-column:1/-1"><div class="token-pct" style="color:#ff6666">6%</div><div class="token-label">Team (5yr Lock)</div></div>
+</div>
+</div>
+
+<div class="wp-section">
+<div class="wp-title">🔒 What Makes ZKR Different</div>
+<div class="wp-text">
+• <span class="highlight">No mint function</span> — supply can never increase<br>
+• <span class="highlight">No freeze/blacklist</span> — nobody can touch your tokens<br>
+• <span class="highlight">Team tokens locked 5 years</span> — enforced by contract<br>
+• <span class="highlight">Liquidity locked</span> — no rug pulls possible<br>
+• <span class="highlight">All treasury transactions on-chain</span> — verify everything<br>
+• <span class="highlight">Open source code</span> — read it, audit it, fork it<br><br>
+Even the founder cannot break these rules. The code is the boss.
+</div>
+</div>
+
+<div class="wp-section">
+<div class="wp-title">🤖 AI Bridge — TON → Base</div>
+<div class="wp-text">
+ZKR is building an <span class="highlight">AI-powered cross-chain bridge</span> between TON Blockchain and Base (Ethereum L2).<br><br>
+• <span class="highlight">Automated bridging</span> — no manual steps, AI handles routing and fee optimization<br>
+• <span class="highlight">1:1 migration</span> — every ZKR on TON becomes 1 ZKR on Base, guaranteed by smart contract<br>
+• <span class="highlight">Zero trust required</span> — the bridge contract is open source and auditable by anyone<br>
+• <span class="highlight">AI slippage protection</span> — intelligent routing minimizes losses during migration<br>
+• <span class="highlight">No centralized custody</span> — your tokens never leave your control during bridging<br><br>
+This is not just a token migration — it is a step toward a fully <span class="highlight">privacy-preserving, AI-assisted cross-chain ecosystem</span>.
+</div>
+</div>
+
+<div class="wp-section">
+<div class="wp-title">🗺️ Roadmap</div>
+<div class="wp-text">
+<span class="highlight">Phase 1 (Now):</span> Launch on TON. Build community. Run airdrop tasks.<br><br>
+<span class="highlight">Phase 2 (~45 days):</span> Presale opens. Smart contract-based — funds go directly to treasury.<br><br>
+<span class="highlight">Phase 3 (~90 days):</span> ZKR listed on TON DEX (STON.fi / DeDust). First buyback & burn cycle begins.<br><br>
+<span class="highlight">Phase 4 (3-6 months):</span> Migrate to Base network. Every 1 ZKR on TON = 1 ZKR on Base.<br><br>
+<span class="highlight">Phase 5:</span> Base DEX listing (Uniswap/Aerodrome), CEX negotiations, privacy layer research.
+</div>
+</div>
+
+<div class="wp-section">
+<div class="wp-title">⚠️ Important</div>
+<div class="wp-text" style="color:#ffaa44">Only invest what you can afford to lose. This is a community project. Results may take 6–12 months. We are committed to transparency above everything else.</div>
+</div>
+
+</div>
+
+<!-- GAME MODAL -->
+<div id="game-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:9999;align-items:center;justify-content:center;flex-direction:column">
+<div class="game-box">
+<div style="color:#3ecfcf;font-size:13px;margin-bottom:5px">50/50 AIRDROP</div>
+<div style="font-size:50px;margin:15px 0" id="box-emoji">🎁</div>
+<div style="font-size:18px;font-weight:bold;color:#fff">Daily Lucky Box</div>
+<div style="color:#888;font-size:13px;margin:10px 0" id="box-desc">Open your free daily box!</div>
+<div id="box-result" style="display:none;padding:15px;border-radius:10px;margin:15px 0;border:1px solid #6c63ff"></div>
+<button id="open-box-btn" onclick="openBox()" style="background:linear-gradient(135deg,#6c63ff,#3ecfcf);border:none;color:#fff;padding:14px;border-radius:25px;font-size:15px;cursor:pointer;width:100%;font-weight:bold">Open Box 🎁</button>
+<br>
+<button onclick="closeGame()" style="background:transparent;border:1px solid #333;color:#666;padding:10px 30px;border-radius:20px;font-size:13px;cursor:pointer;margin-top:10px">Close</button>
+</div>
+</div>
+
+<!-- NAV -->
 <div class="nav">
 <div class="nav-btn active" onclick="showPage('home',this)">🏠</div>
 <div class="nav-btn" onclick="showPage('tasks',this)">📋</div>
 <div class="nav-btn" onclick="showPage('quiz',this)">🧠</div>
 <div class="nav-btn" onclick="showPage('lb',this)">🏆</div>
+<div class="nav-btn" onclick="showPage('wp',this)">📄</div>
+<div class="nav-btn" onclick="showGame()">🎁</div>
 </div>
+
+</div><!-- end app -->
+
 <script>
-const tg=window.Telegram.WebApp;tg.expand();
-let state=JSON.parse(localStorage.getItem('f1vra')||'{"points":0,"tasks":[],"quiz_step":0}');
-const QUIZ=[
-{q:"میناب در چه استانی قرار دارد؟",opts:["هرمزگان","کرمان","سیستان"],ans:0},
-{q:"میناب بیشتر به چه محصولی مشهور است؟",opts:["پسته","خرما","زعفران"],ans:1},
-{q:"رودخانه میناب به کجا می‌ریزد؟",opts:["دریای عمان","خلیج فارس","دریاچه ارومیه"],ans:0},
-{q:"میناب در کدام منطقه ایران قرار دارد؟",opts:["جنوب","شمال","غرب"],ans:0},
+const tg = window.Telegram.WebApp;
+tg.expand();
+
+const SKEY = 'zkr_v2';
+let state = JSON.parse(localStorage.getItem(SKEY) || '{"points":0,"tokens":0,"taps":0,"tasks":[],"quiz_step":0,"referral_count":0}');
+let userId = (tg.initDataUnsafe && tg.initDataUnsafe.user) ? String(tg.initDataUnsafe.user.id) : localStorage.getItem('zkr_uid') || '0';
+localStorage.setItem('zkr_uid', userId);
+let lang = 'en';
+
+// TRANSLATIONS
+const T = {
+  en: {
+    header:'🔐 ZKR', sub:'ZKR | TON Blockchain',
+    tap_info:'Tap = 1 Point 🪙', tap_hint:'Tap to earn!',
+    ref_title:'👥 Your Referrals', ref_btn:'🔗 Copy Invite Link',
+    timer_title:'🚀 ZKR Token Launch Countdown',
+    timer_desc:'Launch aligned with Bitcoin bull run 🔥',
+    tasks_title:'📋 Tasks',
+    t1:'Join ZKR Official Channel', t2:'Subscribe on YouTube',
+    t3:'Start the Bot', t4:'Invite Friends', t4btn:'Invite',
+    t5:'Support the Founder',
+    buy_title:'💎 Buy ZKR',
+    buy_desc:'Presale opens in 45 days. Early supporters get the best rates!',
+    lang_btn:'🌐 FA', ton_btn:'💎 Wallet',
+    d:'Days', h:'Hours', m:'Mins', s:'Secs',
+  },
+  fa: {
+    header:'🔐 زد کا آر', sub:'ZKR | شبکه TON',
+    tap_info:'هر تب = ۱ امتیاز 🪙', tap_hint:'تب کن و جایزه بگیر!',
+    ref_title:'👥 رفرال های تو', ref_btn:'🔗 کپی لینک دعوت',
+    timer_title:'🚀 تا لانچ توکن ZKR',
+    timer_desc:'با روند صعودی بیتکوین لانچ میشه 🔥',
+    tasks_title:'📋 تسک ها',
+    t1:'جوین کانال رسمی ZKR', t2:'سابسکرایب یوتیوب',
+    t3:'استارت بات', t4:'دعوت دوستان', t4btn:'دعوت',
+    t5:'حمایت از فاندر',
+    buy_title:'💎 خرید ZKR',
+    buy_desc:'پری‌سیل ۴۵ روز دیگه باز میشه!',
+    lang_btn:'🌐 EN', ton_btn:'💎 ولت',
+    d:'روز', h:'ساعت', m:'دقیقه', s:'ثانیه',
+  }
+};
+
+// QUIZ
+const QUIZ = [
+  {q:"What does ZKR stand for?", opts:["Zero Knowledge Rollup","Zakat Resource","Zone Key Registry"], ans:0},
+  {q:"Which blockchain is ZKR launching on first?", opts:["Ethereum","TON","Solana"], ans:1},
+  {q:"What is ZKR's total supply?", opts:["100,000,000","21,000,000","50,000,000"], ans:1},
+  {q:"Can ZKR tokens be minted after launch?", opts:["Yes","No — fixed supply","Only by team"], ans:1},
+  {q:"What % of ZKR is allocated for Buyback & Burn?", opts:["6%","35%","25%"], ans:2},
 ];
-function save(){localStorage.setItem('f1vra',JSON.stringify(state));}
-function updateUI(){
-document.getElementById('score').textContent=state.points;
-document.getElementById('tasks-done').textContent=state.tasks.length+' از 4';
-['telegram','twitter','bot','share'].forEach(t=>{
-const b=document.getElementById('btn-'+t);
-if(b&&state.tasks.includes(t)){b.textContent='✅';b.className='task-btn done';b.disabled=true;}
-});}
-function doTask(name,url){
-window.open(url,'_blank');
-setTimeout(()=>{
-if(!state.tasks.includes(name)){
-const pts=name==='share'?150:name==='bot'?50:100;
-state.tasks.push(name);state.points+=pts;save();updateUI();
-tg.showAlert('✅ +'+pts+' امتیاز گرفتی!');}},2000);}
-function shareBot(){tg.switchInlineQuery('بات F1VRA رو امتحان کن!');doTask('share','');}
-function showPage(name,el){
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-document.getElementById('page-'+name).classList.add('active');
-el.classList.add('active');
-if(name==='quiz')renderQuiz();
-if(name==='lb')renderLB();}
-function renderQuiz(){
-const box=document.getElementById('quiz-box');
-if(state.quiz_step>=QUIZ.length){box.innerHTML='<div style="text-align:center;padding:30px">🏆 همه سوالا رو جواب دادی!</div>';return;}
-const q=QUIZ[state.quiz_step];
-box.innerHTML=`<div class="quiz-q">سوال ${state.quiz_step+1} از ${QUIZ.length}<br><br>${q.q}</div>`+q.opts.map((o,i)=>`<button class="quiz-opt" onclick="answerQuiz(${i})">${o}</button>`).join('');}
-function answerQuiz(i){
-const q=QUIZ[state.quiz_step];
-const btns=document.querySelectorAll('.quiz-opt');
-btns[q.ans].classList.add('correct');
-if(i!==q.ans){btns[i].classList.add('wrong');return;}
-state.points+=50;state.quiz_step++;save();
-setTimeout(renderQuiz,800);}
-function renderLB(){
-const fake=[{name:'علی',pts:state.points+500},{name:'سارا',pts:state.points+300},{name:'تو',pts:state.points},{name:'رضا',pts:Math.max(0,state.points-100)}].sort((a,b)=>b.pts-a.pts);
-const medals=['🥇','🥈','🥉','4️⃣'];
-document.getElementById('lb-box').innerHTML=fake.map((u,i)=>`<div class="lb-item"><span>${medals[i]}</span><span>${u.name}</span><span class="lb-pts">${u.pts}</span></div>`).join('');
+
+// TIMER
+const launchDate = new Date(Date.now() + 90*24*60*60*1000);
+function updateTimer(){
+  const d = launchDate - new Date();
+  if(d<=0) return;
+  document.getElementById('t-days').textContent = String(Math.floor(d/86400000)).padStart(2,'0');
+  document.getElementById('t-hours').textContent = String(Math.floor((d%86400000)/3600000)).padStart(2,'0');
+  document.getElementById('t-mins').textContent = String(Math.floor((d%3600000)/60000)).padStart(2,'0');
+  document.getElementById('t-secs').textContent = String(Math.floor((d%60000)/1000)).padStart(2,'0');
 }
+setInterval(updateTimer, 1000);
+updateTimer();
+
+// LANG
+function applyLang(){
+  const t = T[lang];
+  document.getElementById('header-title').textContent = t.header;
+  document.getElementById('header-sub').textContent = t.sub;
+  document.getElementById('tap-info-text').textContent = t.tap_info;
+  document.getElementById('tap-hint-text').textContent = t.tap_hint;
+  document.getElementById('ref-title').textContent = t.ref_title;
+  document.getElementById('ref-btn').textContent = t.ref_btn;
+  document.getElementById('timer-title').textContent = t.timer_title;
+  document.getElementById('timer-desc').textContent = t.timer_desc;
+  document.getElementById('tasks-title').textContent = t.tasks_title;
+  document.getElementById('t1-name').textContent = t.t1;
+  document.getElementById('t2-name').textContent = t.t2;
+  document.getElementById('t3-name').textContent = t.t3;
+  document.getElementById('t4-name').textContent = t.t4;
+  document.getElementById('t4-btn').textContent = t.t4btn;
+  document.getElementById('t5-name').textContent = t.t5;
+  document.getElementById('buy-title').textContent = t.buy_title;
+  document.getElementById('buy-desc').textContent = t.buy_desc;
+  document.getElementById('lang-btn').textContent = t.lang_btn;
+  document.getElementById('ton-btn').textContent = document.getElementById('ton-btn').classList.contains('connected') ? '💎 ✅' : t.ton_btn;
+  document.getElementById('tl-d').textContent = t.d;
+  document.getElementById('tl-h').textContent = t.h;
+  document.getElementById('tl-m').textContent = t.m;
+  document.getElementById('tl-s').textContent = t.s;
+  document.documentElement.dir = lang==='fa'?'rtl':'ltr';
+}
+
+function toggleLang(){
+  lang = lang==='en'?'fa':'en';
+  localStorage.setItem('zkr_lang', lang);
+  applyLang();
+}
+
+// SAVE & UI
+function save(){ localStorage.setItem(SKEY, JSON.stringify(state)); }
+
+function updateUI(){
+  document.getElementById('score').textContent = state.points;
+  document.getElementById('token-count').textContent = (state.tokens||0).toLocaleString();
+  document.getElementById('ref-count').textContent = state.referral_count||0;
+  document.getElementById('ref-sub').textContent = ((state.referral_count||0)*5000).toLocaleString()+' ZKR from referrals';
+  document.getElementById('tapbar').style.width = (state.taps%100)+'%';
+  ['channel','youtube','bot','support'].forEach(t=>{
+    const b = document.getElementById('btn-'+t);
+    if(b && state.tasks.includes(t)){b.textContent='✅';b.className='task-btn done';b.disabled=true;}
+  });
+}
+
+// SPLASH
+document.getElementById('enter-btn').onclick = function(){
+  document.getElementById('splash').style.opacity='0';
+  setTimeout(()=>{
+    document.getElementById('splash').style.display='none';
+    document.getElementById('app').style.display='block';
+    applyLang();
+    updateUI();
+  },1000);
+};
+
+// TAP
+let lastTap=0;
+const tapBtn=document.getElementById('tapbtn');
+const coinEl=document.getElementById('tap-coin-el');
+
+function handleTap(e){
+  e.preventDefault();
+  const now=Date.now();
+  if(now-lastTap<80) return;
+  lastTap=now;
+  state.taps++;
+  state.points++;
+  save();
+  const x=(e.touches?e.touches[0].clientX:e.clientX)||200;
+  const y=(e.touches?e.touches[0].clientY:e.clientY)||200;
+  showFloat('+1',x,y);
+  coinEl.classList.remove('popping');
+  void coinEl.offsetWidth;
+  coinEl.classList.add('popping');
+  updateUI();
+}
+tapBtn.addEventListener('touchstart',handleTap,{passive:false});
+tapBtn.addEventListener('click',handleTap);
+
+function showFloat(txt,x,y){
+  const el=document.createElement('div');
+  el.className='float-pts';el.textContent=txt;
+  el.style.left=(x-15)+'px';el.style.top=(y-15)+'px';
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),800);
+}
+
+// TON CONNECT
+let tonConnectUI=null;
+try{
+  tonConnectUI=new TON_CONNECT_UI.TonConnectUI({
+    manifestUrl:'https://hoseinszee.github.io/MinabTapBot/tonconnect-manifest.json',
+    buttonRootId:null
+  });
+  tonConnectUI.onStatusChange(wallet=>{
+    const btn=document.getElementById('ton-btn');
+    const sBtn=document.getElementById('btn-support');
+    if(wallet){
+      btn.textContent='💎 ✅';btn.classList.add('connected');
+    }else{
+      btn.textContent=T[lang].ton_btn;btn.classList.remove('connected');
+    }
+  });
+}catch(e){console.log('TON:',e);}
+
+function connectWallet(){if(tonConnectUI)tonConnectUI.openModal();}
+
+// SUPPORT FOUNDER
+async function supportFounder(){
+  if(!tonConnectUI||!tonConnectUI.wallet){
+    tg.showAlert('Connect your TON wallet first! 💎');
+    connectWallet();
+    return;
+  }
+  const tx={
+    validUntil:Math.floor(Date.now()/1000)+600,
+    messages:[{
+      address:'UQBbWHxNpPeI0oXO6OIfR3alZ9T9T40pR_BDRPvYyqSsl-Kl',
+      amount:'100000000'
+    }]
+  };
+  try{
+    await tonConnectUI.sendTransaction(tx);
+    if(!state.tasks.includes('support')){
+      state.tasks.push('support');
+      state.points+=300;
+      state.tokens+=3000;
+      save();updateUI();
+    }
+    tg.showAlert('Thank you for your support! 💎 +300 pts & +3,000 ZKR');
+  }catch(e){
+    tg.showAlert('Transaction cancelled.');
+  }
+}
+
+// BUY TOKENS
+async function buyTokens(ton,tokens){
+  if(!tonConnectUI||!tonConnectUI.wallet){
+    tg.showAlert('Connect your TON wallet first! 💎');
+    connectWallet();
+    return;
+  }
+  const tx={
+    validUntil:Math.floor(Date.now()/1000)+600,
+    messages:[{
+      address:'UQBbWHxNpPeI0oXO6OIfR3alZ9T9T40pR_BDRPvYyqSsl-Kl',
+      amount:String(ton*1000000000)
+    }]
+  };
+  try{
+    await tonConnectUI.sendTransaction(tx);
+    state.tokens+=tokens;
+    state.points+=ton*50;
+    save();updateUI();
+    tg.showAlert('Payment sent! +'+tokens.toLocaleString()+' ZKR added! 🎉');
+  }catch(e){
+    tg.showAlert('Transaction cancelled.');
+  }
+}
+
+// TASKS
+function doTask(name,url){
+  window.open(url,'_blank');
+  setTimeout(()=>{
+    if(!state.tasks.includes(name)){
+      const pts=name==='channel'?200:name==='bot'?50:100;
+      const tkn=pts*10;
+      state.tasks.push(name);state.points+=pts;state.tokens+=tkn;
+      save();updateUI();
+      tg.showAlert('+'+pts+' pts & +'+tkn+' ZKR!');
+    }
+  },2000);
+}
+
+function copyRefLink(){
+  const link='https://t.me/zkrtonbot?start='+userId;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(link).then(()=>tg.showAlert('Link copied!\n\n'+link));
+  }else{
+    tg.showAlert('Your invite link:\n\n'+link);
+  }
+}
+
+// PAGES
+function showPage(name,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  el.classList.add('active');
+  if(name==='quiz')renderQuiz();
+  if(name==='lb')renderLB();
+}
+
+// QUIZ
+function renderQuiz(){
+  const box=document.getElementById('quiz-box');
+  if(state.quiz_step>=QUIZ.length){
+    box.innerHTML='<div style="text-align:center;padding:30px;color:#3ecfcf">🏆 All questions answered!<br><br>+250 pts earned!</div>';
+    return;
+  }
+  const q=QUIZ[state.quiz_step];
+  box.innerHTML='<div class="quiz-q">Question '+(state.quiz_step+1)+' of '+QUIZ.length+'<br><br>'+q.q+'</div>'+
+    q.opts.map((o,i)=>'<button class="quiz-opt" onclick="answerQuiz('+i+')">'+o+'</button>').join('');
+}
+
+function answerQuiz(i){
+  const q=QUIZ[state.quiz_step];
+  const btns=document.querySelectorAll('.quiz-opt');
+  btns.forEach(b=>b.disabled=true);
+  btns[q.ans].classList.add('correct');
+  if(i!==q.ans){btns[i].classList.add('wrong');setTimeout(renderQuiz,1200);return;}
+  state.points+=50;state.tokens+=500;state.quiz_step++;
+  save();setTimeout(renderQuiz,800);
+}
+
+// LEADERBOARD
+function renderLB(){
+  const fake=[
+    {name:'Alex',pts:state.points+1200},
+    {name:'Sarah',pts:state.points+800},
+    {name:'You',pts:state.points},
+    {name:'Mike',pts:Math.max(0,state.points-200)},
+    {name:'Luna',pts:Math.max(0,state.points-500)},
+  ].sort((a,b)=>b.pts-a.pts);
+  const medals=['🥇','🥈','🥉','4️⃣','5️⃣'];
+  document.getElementById('lb-box').innerHTML=fake.map((u,i)=>
+    '<div class="lb-item"><span style="font-size:20px;width:30px">'+medals[i]+'</span><span class="lb-name" style="'+(u.name==='You'?'color:#8b7fff;font-weight:bold':'')+'">'+u.name+'</span><span class="lb-pts">'+u.pts+'</span></div>'
+  ).join('');
+}
+
+// LUCKY BOX
+function showGame(){
+  var modal=document.getElementById('game-modal');
+  modal.style.display='flex';
+  var last=localStorage.getItem('zkr_box');
+  var today=new Date().toDateString();
+  var btn=document.getElementById('open-box-btn');
+  var desc=document.getElementById('box-desc');
+  if(last===today){btn.disabled=true;btn.style.opacity='0.5';desc.textContent='Come back tomorrow!';}
+  else{btn.disabled=false;btn.style.opacity='1';desc.textContent='Open your free daily box!';}
+  document.getElementById('box-result').style.display='none';
+  document.getElementById('box-emoji').textContent='🎁';
+}
+
+function closeGame(){document.getElementById('game-modal').style.display='none';}
+
+function openBox(){
+  var today=new Date().toDateString();
+  localStorage.setItem('zkr_box',today);
+  document.getElementById('open-box-btn').disabled=true;
+  document.getElementById('open-box-btn').style.opacity='0.5';
+  var rand=Math.random();
+  var prize,emoji,color;
+  if(rand<0.50){var amt=Math.floor(Math.random()*900+100);prize=amt+' ZKR';emoji='🪙';color='#3ecfcf';state.tokens+=amt;}
+  else if(rand<0.75){prize='500 ZKR BONUS';emoji='💎';color='#8b7fff';state.tokens+=500;}
+  else if(rand<0.90){prize='Telegram Gift — Coming Soon!';emoji='🎀';color='#ff6b9d';}
+  else{prize='NFT Whitelist Spot!';emoji='🖼️';color='#ffaa00';}
+  state.points+=50;save();updateUI();
+  var result=document.getElementById('box-result');
+  result.style.display='block';
+  result.style.borderColor=color;
+  result.style.background='rgba(108,99,255,0.08)';
+  result.innerHTML='<div style="font-size:40px">'+emoji+'</div><div style="color:'+color+';font-size:16px;font-weight:bold;margin-top:8px">'+prize+'</div><div style="color:#888;font-size:12px;margin-top:5px">+50 bonus points!</div>';
+  document.getElementById('box-emoji').textContent=emoji;
+  tg.showAlert(emoji+' You won: '+prize+'!');
+}
+
+// PARTICLES
+(function(){
+  var canvas=document.getElementById('particles');
+  var ctx=canvas.getContext('2d');
+  var particles=[];
+  function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+  resize();
+  window.addEventListener('resize',resize);
+  for(var i=0;i<40;i++){
+    particles.push({x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,r:Math.random()*1.5+0.5,dx:(Math.random()-0.5)*0.3,dy:(Math.random()-0.5)*0.3,o:Math.random()*0.4+0.1});
+  }
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(function(p){
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(139,127,255,'+p.o+')';ctx.fill();
+      p.x+=p.dx;p.y+=p.dy;
+      if(p.x<0||p.x>canvas.width)p.dx*=-1;
+      if(p.y<0||p.y>canvas.height)p.dy*=-1;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+applyLang();
 updateUI();
 </script>
 </body>
