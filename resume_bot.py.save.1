@@ -1,0 +1,89 @@
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ConversationHandler, filters, ContextTypes
+
+TOKEN = "7872471977:AAGu71rkVdC4FOjor95J_b6uBlvTlk88l1Y"
+
+NAME, PHONE, EMAIL, JOB, SKILLS, EXPERIENCE, EDUCATION = range(7)
+
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("سلام! رزومه‌سازم 📄\nاسمت رو بنویس:")
+    return NAME
+
+async def get_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    context.user_data['name'] = update.message.text
+    await update.message.reply_text("شماره تلفنت:")
+    return PHONE
+
+async def get_phone(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    context.user_data['phone'] = update.message.text
+    await update.message.reply_text("ایمیلت:")
+    return EMAIL
+
+async def get_email(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    context.user_data['email'] = update.message.text
+    await update.message.reply_text("شغل مورد نظرت:")
+    return JOB
+
+async def get_job(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    context.user_data['job'] = update.message.text
+    await update.message.reply_text("مهارت‌هات رو بنویس (مثلاً: پایتون، فتوشاپ):")
+    return SKILLS
+
+async def get_skills(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    context.user_data['skills'] = update.message.text
+    await update.message.reply_text("سابقه کاریت:")
+    return EXPERIENCE
+
+async def get_experience(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    context.user_data['experience'] = update.message.text
+    await update.message.reply_text("تحصیلاتت:")
+    return EDUCATION
+
+async def get_education(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    context.user_data['education'] = update.message.text
+    d = context.user_data
+    resume = f"""
+📄 رزومه {d['name']}
+
+👤 اطلاعات تماس:
+📞 {d['phone']}
+📧 {d['email']}
+
+💼 شغل مورد نظر: {d['job']}
+
+🛠 مهارت‌ها:
+{d['skills']}
+
+💡 سابقه کاری:
+{d['experience']}
+
+🎓 تحصیلات:
+{d['education']}
+"""
+    await update.message.reply_text(resume)
+    return ConversationHandler.END
+
+async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("لغو شد. دوباره /start بزن.")
+    return ConversationHandler.END
+
+app = ApplicationBuilder().token(TOKEN).build()
+
+conv = ConversationHandler(
+    entry_points=[CommandHandler("start", start)],
+    states={
+        NAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_name)],
+        PHONE: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_phone)],
+        EMAIL: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_email)],
+        JOB: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_job)],
+        SKILLS: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_skills)],
+        EXPERIENCE: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_experience)],
+        EDUCATION: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_education)],
+    },
+    fallbacks=[CommandHandler("cancel", cancel)],
+)
+
+app.add_handler(conv)
+print("بات رزومه‌ساز داره اجرا میشه...")
+app.run_polling()
+

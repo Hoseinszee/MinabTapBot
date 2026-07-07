@@ -56,7 +56,7 @@ async def add_referral(referrer_id):
 
 def get_keyboard(user_id, lang):
     t = TEXTS[lang]
-    webapp_url = f"https://hoseinszee.github.io/MinabTapBot/?uid={user_id}"
+    webapp_url = f"https://minab-tap-bot--wwwhosein.replit.app/?uid={user_id}"
     return InlineKeyboardMarkup([
         [InlineKeyboardButton(t["open"], web_app=WebAppInfo(url=webapp_url))],
         [InlineKeyboardButton(t["reflink"], callback_data="reflink"), InlineKeyboardButton(t["stats"], callback_data="mystats")],
@@ -95,7 +95,7 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
         username = query.from_user.username or query.from_user.first_name
         await query.edit_message_text(TEXTS[lang]["welcome"].format(name=username), reply_markup=get_keyboard(user_id, lang))
     elif query.data == "reflink":
-        ref_link = f"https://t.me/MinabTapBot?start={user_id}"
+        ref_link = f"https://t.me/zkrtonbot?start={user_id}"
         await query.message.reply_text(TEXTS[lang]["ref_msg"].format(link=ref_link))
     elif query.data == "mystats":
         user = await get_user(user_id)

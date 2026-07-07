@@ -1,0 +1,19 @@
+from telegram import Update
+from telegram.ext import Application, CommandHandler, ContextTypes
+
+# ←←← اینجا توکن باتت رو بذار ↓↓↓
+7872471977:AAGu71rkVdC4FOjor95J_b6uBlvTlk88l1YTOKEN = "توکن_بات_تو_رو_اینجا_بذار"
+
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("👋 سلام! به بات Tap to Earn خوش اومدی!\n\nبرای گرفتن امتیاز بنویس: /tap")
+
+async def tap(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("✅ +۱۰ امتیاز گرفتی!\n\nبالانس فعلی: ۱۰ امتیاز 🎉")
+
+app = Application.builder().token(TOKEN).build()
+
+app.add_handler(CommandHandler("start", start))
+app.add_handler(CommandHandler("tap", tap))
+
+print("✅ بات با موفقیت شروع شد!")
+app.run_polling()
